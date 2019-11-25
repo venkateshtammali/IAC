@@ -10,7 +10,7 @@ provider "aws" {
 # }
 
 module "fh-es" {
-  source = "./../firehose-es"
+  source = "./../modules/firehose-es"
 
   env    = "${var.env}"
   region = "${var.region}"
