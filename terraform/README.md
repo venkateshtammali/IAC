@@ -14,6 +14,7 @@
   - [File Names](#file-names)
   - [Resource Reference Naming](#resource-reference-naming)
   - [Resource Naming](#resource-naming)
+- [Modules](#modules)
 
 ## Introduction
 
@@ -159,3 +160,12 @@ resource "aws_s3_bucket" "images_s3" {
   acl    = "private"
 }
 ```
+
+##Modules
+* Use modules for a single resource's template
+* Every module should have three files
+    ```
+    variables.tf
+    template.tf
+    output.tf
+    ```
