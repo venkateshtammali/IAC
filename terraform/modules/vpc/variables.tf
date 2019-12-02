@@ -6,5 +6,5 @@ variable "region" {
 
 variable "env" {
   description = "Environment for terraform"
-  type = "string"
+  type        = "string"
 }
