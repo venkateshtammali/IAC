@@ -1,3 +1,8 @@
+locals {
+  eks_cluster_name = "${var.env}-eks"
+}
+
+
 # VPC
 resource "aws_vpc" "vpc" {
   cidr_block           = "10.0.0.0/16"
@@ -19,6 +24,8 @@ resource "aws_subnet" "eks_public_1_sn" {
 
   tags = {
     Name = "${var.env}-eks-public-1-sn"
+    "kubernetes.io/cluster/${local.eks_cluster_name}" = "shared"
+    "kubernetes.io/role/elb" = 1
   }
 }
 
@@ -30,6 +37,8 @@ resource "aws_subnet" "eks_public_2_sn" {
 
   tags = {
     Name = "${var.env}-eks-public-2-sn"
+    "kubernetes.io/cluster/${local.eks_cluster_name}" = "shared"
+    "kubernetes.io/role/elb" = 1
   }
 }
 resource "aws_subnet" "eks_public_3_sn" {
@@ -40,6 +49,8 @@ resource "aws_subnet" "eks_public_3_sn" {
 
   tags = {
     Name = "${var.env}-eks-public-3-sn"
+    "kubernetes.io/cluster/${local.eks_cluster_name}" = "shared"
+    "kubernetes.io/role/elb" = 1
   }
 }
 resource "aws_subnet" "eks_private_1_sn" {
@@ -50,6 +61,8 @@ resource "aws_subnet" "eks_private_1_sn" {
 
   tags = {
     Name = "${var.env}-eks-private-1-sn"
+    "kubernetes.io/cluster/${local.eks_cluster_name}" = "shared"
+    "kubernetes.io/role/internal-elb" = 1
   }
 }
 resource "aws_subnet" "eks_private_2_sn" {
@@ -60,6 +73,8 @@ resource "aws_subnet" "eks_private_2_sn" {
 
   tags = {
     Name = "${var.env}-eks-private-2-sn"
+    "kubernetes.io/cluster/${local.eks_cluster_name}" = "shared"
+    "kubernetes.io/role/internal-elb" = 1
   }
 }
 resource "aws_subnet" "eks_private_3_sn" {
@@ -70,6 +85,8 @@ resource "aws_subnet" "eks_private_3_sn" {
 
   tags = {
     Name = "${var.env}-eks-private-3-sn"
+    "kubernetes.io/cluster/${local.eks_cluster_name}" = "shared"
+    "kubernetes.io/role/internal-elb" = 1
   }
 }
 

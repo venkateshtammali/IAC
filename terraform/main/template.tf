@@ -18,9 +18,18 @@ module "vpc" {
 #   region = "${var.region}"
 # }
 
-module "eks" {
-  source = "./../modules/eks"
+module "eks_cp" {
+  source = "./../modules/eks/control-plane"
 
   env = "development"
+  cluster_name = "${module.vpc.eks_cluster_name}"
   subnet_ids = ["${module.vpc.eks_public_1_sn_id}", "${module.vpc.eks_public_2_sn_id}", "${module.vpc.eks_public_3_sn_id}"]
+}
+
+module "eks_ng" {
+  source = "./../modules/eks/node-group"
+
+  env = "development"
+  cluster_name = "${module.eks_cp.eks_cluster_name}"
+  subnet_ids = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
 }

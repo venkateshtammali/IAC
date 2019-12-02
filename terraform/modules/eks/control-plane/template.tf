@@ -1,5 +1,5 @@
 locals {
-  cluster_name = "${var.env}-eks"
+  cluster_name = "${var.cluster_name}"
 }
 
 resource "aws_iam_role" "eks_rl" {
