@@ -1,14 +1,38 @@
-module "fh-s3" {
+locals {
+  firehose_name = "${var.env}-fh"
+}
+
+data "aws_kms_alias" "s3" {
+  name = "alias/aws/s3"
+}
+
+module "s3" {
   source = "./../s3"
 
   env    = "${var.env}"
   region = "${var.region}"
 }
 
-module "fh-es" {
+module "es" {
   source = "./../elasticsearch"
 
   env = "${var.env}"
+}
+
+# Create log group for Firehose
+resource "aws_cloudwatch_log_group" "fh_lg" {
+  name = "/aws/kinesisfirehose/${local.firehose_name}"
+}
+
+# Create log stream for S3
+resource "aws_cloudwatch_log_stream" "s3_ls" {
+  name           = "S3Delivery"
+  log_group_name = "${aws_cloudwatch_log_group.fh_lg.name}"
+}
+
+resource "aws_cloudwatch_log_stream" "es_ls" {
+  name           = "ElasticsearchDelivery"
+  log_group_name = "${aws_cloudwatch_log_group.fh_lg.name}"
 }
 
 resource "aws_iam_role" "fh-rl" {
@@ -48,8 +72,8 @@ resource "aws_iam_role_policy" "fh-pl" {
             "s3:PutObject"
         ],
         "Resource": [
-            "${module.fh-s3.arn}",
-            "${module.fh-s3.arn}/*"
+            "${module.s3.arn}",
+            "${module.s3.arn}/*"
         ]
     }, {
         "Effect": "Allow",
@@ -61,8 +85,8 @@ resource "aws_iam_role_policy" "fh-pl" {
             "es:ESHttpPut"
         ],
         "Resource": [
-            "${module.fh-es.arn}",
-            "${module.fh-es.arn}/*"
+            "${module.es.arn}",
+            "${module.es.arn}/*"
         ]
     }, {
         "Effect": "Allow",
@@ -70,40 +94,65 @@ resource "aws_iam_role_policy" "fh-pl" {
             "es:ESHttpGet"
         ],
         "Resource": [
-            "${module.fh-es.arn}/_all/_settings",
-            "${module.fh-es.arn}/_cluster/stats",
-            "${module.fh-es.arn}/events*/_mapping/_doc",
-            "${module.fh-es.arn}/_nodes",
-            "${module.fh-es.arn}/_nodes/stats",
-            "${module.fh-es.arn}/_nodes/*/stats",
-            "${module.fh-es.arn}/_stats",
-            "${module.fh-es.arn}/events*/_stats"
+            "${module.es.arn}/_all/_settings",
+            "${module.es.arn}/_cluster/stats",
+            "${module.es.arn}/events*/_mapping/_doc",
+            "${module.es.arn}/_nodes",
+            "${module.es.arn}/_nodes/stats",
+            "${module.es.arn}/_nodes/*/stats",
+            "${module.es.arn}/_stats",
+            "${module.es.arn}/events*/_stats"
+        ]
+    }, {
+        "Sid": "",
+        "Effect": "Allow",
+        "Action": [
+            "logs:PutLogEvents"
+        ],
+        "Resource": [
+          "${aws_cloudwatch_log_group.fh_lg.arn}"
         ]
     }]
 }
 EOF
 }
 
-
 resource "aws_kinesis_firehose_delivery_stream" "fh" {
-  name        = "${var.env}-fh"
+  name        = "${local.firehose_name}"
   destination = "elasticsearch"
+  server_side_encryption {
+    enabled = true
+  }
 
   s3_configuration {
     role_arn        = "${aws_iam_role.fh-rl.arn}"
-    bucket_arn      = "${module.fh-s3.arn}"
+    bucket_arn      = "${module.s3.arn}"
     buffer_size     = 1
     buffer_interval = 60
+    kms_key_arn = "${data.aws_kms_alias.s3.arn}"
+
+    cloudwatch_logging_options {
+      enabled         = true
+      log_group_name  = "${aws_cloudwatch_log_group.fh_lg.name}"
+      log_stream_name = "${aws_cloudwatch_log_stream.s3_ls.name}"
+    }
   }
 
   elasticsearch_configuration {
-    domain_arn = "${module.fh-es.arn}"
+    domain_arn = "${module.es.arn}"
     role_arn   = "${aws_iam_role.fh-rl.arn}"
     index_name = "events"
     type_name  = "_doc"
     index_rotation_period = "NoRotation"
     buffering_size = 1
     buffering_interval = 60
+    retry_duration = 60
     s3_backup_mode = "AllDocuments"
+
+    cloudwatch_logging_options {
+      enabled         = true
+      log_group_name  = "${aws_cloudwatch_log_group.fh_lg.name}"
+      log_stream_name = "${aws_cloudwatch_log_stream.es_ls.name}"
+    }
   }
 }
