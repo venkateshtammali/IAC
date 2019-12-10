@@ -41,6 +41,7 @@ resource "aws_subnet" "eks_public_2_sn" {
     "kubernetes.io/role/elb" = 1
   }
 }
+
 resource "aws_subnet" "eks_public_3_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.5.0/24"
@@ -53,6 +54,7 @@ resource "aws_subnet" "eks_public_3_sn" {
     "kubernetes.io/role/elb" = 1
   }
 }
+
 resource "aws_subnet" "eks_private_1_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.2.0/24"
@@ -65,6 +67,7 @@ resource "aws_subnet" "eks_private_1_sn" {
     "kubernetes.io/role/internal-elb" = 1
   }
 }
+
 resource "aws_subnet" "eks_private_2_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.4.0/24"
@@ -116,10 +119,12 @@ resource "aws_route_table_association" "eks_public_1_rt_assoc" {
   subnet_id      = "${aws_subnet.eks_public_1_sn.id}"
   route_table_id = "${aws_route_table.eks_public_rt.id}"
 }
+
 resource "aws_route_table_association" "eks_public_2_rt_assoc" {
   subnet_id      = "${aws_subnet.eks_public_2_sn.id}"
   route_table_id = "${aws_route_table.eks_public_rt.id}"
 }
+
 resource "aws_route_table_association" "eks_public_3_rt_assoc" {
   subnet_id      = "${aws_subnet.eks_public_3_sn.id}"
   route_table_id = "${aws_route_table.eks_public_rt.id}"
@@ -152,7 +157,7 @@ resource "aws_route_table" "eks_private_rt" {
   }
 }
 
-# Associating route table with private subnets
+# # Associating route table with private subnets
 resource "aws_route_table_association" "private-1-rt-association" {
   subnet_id      = "${aws_subnet.eks_private_1_sn.id}"
   route_table_id = "${aws_route_table.eks_private_rt.id}"
@@ -168,3 +173,65 @@ resource "aws_route_table_association" "private-3-rt-association" {
   route_table_id = "${aws_route_table.eks_private_rt.id}"
 }
 
+# Redis subnets
+resource "aws_subnet" "ec_private_1_sn" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  cidr_block              = "10.0.7.0/24"
+  map_public_ip_on_launch = "false"
+  availability_zone       = "us-east-1a"
+
+  tags = {
+    Name = "${var.env}-ec-private-1-sn"
+  }
+}
+
+resource "aws_subnet" "ec_private_2_sn" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  cidr_block              = "10.0.8.0/24"
+  map_public_ip_on_launch = "false"
+  availability_zone       = "us-east-1b"
+
+  tags = {
+    Name = "${var.env}-ec-private-2-sn"
+  }
+}
+
+resource "aws_subnet" "ec_private_3_sn" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  cidr_block              = "10.0.9.0/24"
+  map_public_ip_on_launch = "false"
+  availability_zone       = "us-east-1c"
+
+  tags = {
+    Name = "${var.env}-ec-private-3-sn"
+  }
+}
+
+# Redis Route table
+resource "aws_route_table" "ec_private_rt" {
+  vpc_id = "${aws_vpc.vpc.id}"
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = "${aws_nat_gateway.nat.id}"
+  }
+
+  tags = {
+    Name = "${var.env}-ec-private-rt"
+  }
+}
+
+# Associating route table with private subnets
+resource "aws_route_table_association" "ec_private_1_rt_assoc" {
+  subnet_id      = "${aws_subnet.ec_private_1_sn.id}"
+  route_table_id = "${aws_route_table.ec_private_rt.id}"
+}
+
+resource "aws_route_table_association" "ec_private_2_rt_assoc" {
+  subnet_id      = "${aws_subnet.ec_private_2_sn.id}"
+  route_table_id = "${aws_route_table.ec_private_rt.id}"
+}
+
+resource "aws_route_table_association" "ec_private_3_rt_assoc" {
+  subnet_id      = "${aws_subnet.ec_private_3_sn.id}"
+  route_table_id = "${aws_route_table.ec_private_rt.id}"
+}
