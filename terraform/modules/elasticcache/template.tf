@@ -30,5 +30,5 @@ resource "aws_elasticache_cluster" "ec" {
   engine_version       = "5.0.5"
   port                 = 6379
   subnet_group_name    = "${aws_elasticache_subnet_group.ec_sng.name}"
-  security_group_ids = ["${aws_security_group.ec_sg.id}"]
+  security_group_ids   = ["${aws_security_group.ec_sg.id}"]
 }
