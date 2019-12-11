@@ -11,12 +11,12 @@ provider "aws" {
 # }
 
 # Create Firehose and ES
-module "fh-es" {
-  source = "./../modules/firehose-es"
+# module "fh-es" {
+#   source = "./../modules/firehose-es"
 
-  env    = "${var.env}"
-  region = "${var.region}"
-}
+#   env    = "${var.env}"
+#   region = "${var.region}"
+# }
 
 # module "eks_cp" {
 #   source = "./../modules/eks/control-plane"
@@ -32,4 +32,19 @@ module "fh-es" {
 #   env = "development"
 #   cluster_name = "${module.eks_cp.eks_cluster_name}"
 #   subnet_ids = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
+# }
+# create sns 
+# module "sns"{
+#   source = "./../modules/sns"
+
+#   env    = "${var.env}"
+#   email_addresses= ["abc@gmail.com"]
+# }
+
+# #creating helathchecks  
+# module "r53-hc" {
+#   source = "./../modules/r53-hc"
+
+#   env    = "${var.env}"
+#   alarms_email= ["abc@gmail.com"]
 # }
