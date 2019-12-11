@@ -23,9 +23,9 @@ resource "aws_subnet" "eks_public_1_sn" {
   availability_zone       = "us-west-2a"
 
   tags = {
-    Name = "${var.env}-eks-public-1-sn"
+    Name                                              = "${var.env}-eks-public-1-sn"
     "kubernetes.io/cluster/${local.eks_cluster_name}" = "shared"
-    "kubernetes.io/role/elb" = 1
+    "kubernetes.io/role/elb"                          = 1
   }
 }
 
@@ -36,11 +36,12 @@ resource "aws_subnet" "eks_public_2_sn" {
   availability_zone       = "us-west-2b"
 
   tags = {
-    Name = "${var.env}-eks-public-2-sn"
+    Name                                              = "${var.env}-eks-public-2-sn"
     "kubernetes.io/cluster/${local.eks_cluster_name}" = "shared"
-    "kubernetes.io/role/elb" = 1
+    "kubernetes.io/role/elb"                          = 1
   }
 }
+
 resource "aws_subnet" "eks_public_3_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.5.0/24"
@@ -48,11 +49,12 @@ resource "aws_subnet" "eks_public_3_sn" {
   availability_zone       = "us-west-2c"
 
   tags = {
-    Name = "${var.env}-eks-public-3-sn"
+    Name                                              = "${var.env}-eks-public-3-sn"
     "kubernetes.io/cluster/${local.eks_cluster_name}" = "shared"
-    "kubernetes.io/role/elb" = 1
+    "kubernetes.io/role/elb"                          = 1
   }
 }
+
 resource "aws_subnet" "eks_private_1_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.2.0/24"
@@ -60,11 +62,12 @@ resource "aws_subnet" "eks_private_1_sn" {
   availability_zone       = "us-west-2a"
 
   tags = {
-    Name = "${var.env}-eks-private-1-sn"
+    Name                                              = "${var.env}-eks-private-1-sn"
     "kubernetes.io/cluster/${local.eks_cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb" = 1
+    "kubernetes.io/role/internal-elb"                 = 1
   }
 }
+
 resource "aws_subnet" "eks_private_2_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.4.0/24"
@@ -72,11 +75,12 @@ resource "aws_subnet" "eks_private_2_sn" {
   availability_zone       = "us-west-2b"
 
   tags = {
-    Name = "${var.env}-eks-private-2-sn"
+    Name                                              = "${var.env}-eks-private-2-sn"
     "kubernetes.io/cluster/${local.eks_cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb" = 1
+    "kubernetes.io/role/internal-elb"                 = 1
   }
 }
+
 resource "aws_subnet" "eks_private_3_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.6.0/24"
@@ -84,9 +88,73 @@ resource "aws_subnet" "eks_private_3_sn" {
   availability_zone       = "us-west-2c"
 
   tags = {
-    Name = "${var.env}-eks-private-3-sn"
+    Name                                              = "${var.env}-eks-private-3-sn"
     "kubernetes.io/cluster/${local.eks_cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb" = 1
+    "kubernetes.io/role/internal-elb"                 = 1
+  }
+}
+
+# NACL for EKS public subnets
+resource "aws_network_acl" "eks_public_nacl" {
+  vpc_id = "${aws_vpc.vpc.id}"
+  subnet_ids = [
+    "${aws_subnet.eks_public_1_sn.id}",
+    "${aws_subnet.eks_public_2_sn.id}",
+    "${aws_subnet.eks_public_3_sn.id}"
+  ]
+
+  egress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  ingress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  tags = {
+    Name = "${var.env}-eks-public-nacl"
+  }
+}
+
+# NACL for EKS private subnets
+resource "aws_network_acl" "eks_private_nacl" {
+  vpc_id = "${aws_vpc.vpc.id}"
+  subnet_ids = [
+    "${aws_subnet.eks_private_1_sn.id}",
+    "${aws_subnet.eks_private_2_sn.id}",
+    "${aws_subnet.eks_private_3_sn.id}"
+  ]
+
+  egress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  ingress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  tags = {
+    Name = "${var.env}-eks-private-nacl"
   }
 }
 
@@ -116,10 +184,12 @@ resource "aws_route_table_association" "eks_public_1_rt_assoc" {
   subnet_id      = "${aws_subnet.eks_public_1_sn.id}"
   route_table_id = "${aws_route_table.eks_public_rt.id}"
 }
+
 resource "aws_route_table_association" "eks_public_2_rt_assoc" {
   subnet_id      = "${aws_subnet.eks_public_2_sn.id}"
   route_table_id = "${aws_route_table.eks_public_rt.id}"
 }
+
 resource "aws_route_table_association" "eks_public_3_rt_assoc" {
   subnet_id      = "${aws_subnet.eks_public_3_sn.id}"
   route_table_id = "${aws_route_table.eks_public_rt.id}"
@@ -152,7 +222,7 @@ resource "aws_route_table" "eks_private_rt" {
   }
 }
 
-# Associating route table with private subnets
+# # Associating route table with private subnets
 resource "aws_route_table_association" "private-1-rt-association" {
   subnet_id      = "${aws_subnet.eks_private_1_sn.id}"
   route_table_id = "${aws_route_table.eks_private_rt.id}"
@@ -168,3 +238,97 @@ resource "aws_route_table_association" "private-3-rt-association" {
   route_table_id = "${aws_route_table.eks_private_rt.id}"
 }
 
+# Redis subnets
+resource "aws_subnet" "ec_private_1_sn" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  cidr_block              = "10.0.7.0/24"
+  map_public_ip_on_launch = "false"
+  availability_zone       = "us-west-2a"
+
+  tags = {
+    Name = "${var.env}-ec-private-1-sn"
+  }
+}
+
+resource "aws_subnet" "ec_private_2_sn" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  cidr_block              = "10.0.8.0/24"
+  map_public_ip_on_launch = "false"
+  availability_zone       = "us-west-2b"
+
+  tags = {
+    Name = "${var.env}-ec-private-2-sn"
+  }
+}
+
+resource "aws_subnet" "ec_private_3_sn" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  cidr_block              = "10.0.9.0/24"
+  map_public_ip_on_launch = "false"
+  availability_zone       = "us-west-2c"
+
+  tags = {
+    Name = "${var.env}-ec-private-3-sn"
+  }
+}
+
+# Redis NACL
+resource "aws_network_acl" "ec_private_nacl" {
+  vpc_id = "${aws_vpc.vpc.id}"
+  subnet_ids = [
+    "${aws_subnet.ec_private_1_sn.id}",
+    "${aws_subnet.ec_private_2_sn.id}",
+    "${aws_subnet.ec_private_3_sn.id}"
+  ]
+
+  egress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  ingress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  tags = {
+    Name = "${var.env}-ec-private-nacl"
+  }
+}
+
+# Redis Route table
+resource "aws_route_table" "ec_private_rt" {
+  vpc_id = "${aws_vpc.vpc.id}"
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = "${aws_nat_gateway.nat.id}"
+  }
+
+  tags = {
+    Name = "${var.env}-ec-private-rt"
+  }
+}
+
+# Associating Redis route table with private subnets
+resource "aws_route_table_association" "ec_private_1_rt_assoc" {
+  subnet_id      = "${aws_subnet.ec_private_1_sn.id}"
+  route_table_id = "${aws_route_table.ec_private_rt.id}"
+}
+
+resource "aws_route_table_association" "ec_private_2_rt_assoc" {
+  subnet_id      = "${aws_subnet.ec_private_2_sn.id}"
+  route_table_id = "${aws_route_table.ec_private_rt.id}"
+}
+
+resource "aws_route_table_association" "ec_private_3_rt_assoc" {
+  subnet_id      = "${aws_subnet.ec_private_3_sn.id}"
+  route_table_id = "${aws_route_table.ec_private_rt.id}"
+}

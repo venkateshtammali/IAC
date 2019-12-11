@@ -1,6 +1,6 @@
 
-# output "eks" {
-#   value = "${module.vpc.subnet_ids}"
+# output "ec_id" {
+#   value = "${module.elasticcache.ec_id}"
 # }
 # output "arn" {
 #   value       = "${module.sns.arn}"

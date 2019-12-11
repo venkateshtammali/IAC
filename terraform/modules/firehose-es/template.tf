@@ -129,7 +129,7 @@ resource "aws_kinesis_firehose_delivery_stream" "fh" {
     bucket_arn      = "${module.s3.arn}"
     buffer_size     = 1
     buffer_interval = 60
-    kms_key_arn = "${data.aws_kms_alias.s3.arn}"
+    kms_key_arn     = "${data.aws_kms_alias.s3.arn}"
 
     cloudwatch_logging_options {
       enabled         = true
@@ -139,15 +139,15 @@ resource "aws_kinesis_firehose_delivery_stream" "fh" {
   }
 
   elasticsearch_configuration {
-    domain_arn = "${module.es.arn}"
-    role_arn   = "${aws_iam_role.fh-rl.arn}"
-    index_name = "events"
-    type_name  = "_doc"
+    domain_arn            = "${module.es.arn}"
+    role_arn              = "${aws_iam_role.fh-rl.arn}"
+    index_name            = "events"
+    type_name             = "_doc"
     index_rotation_period = "NoRotation"
-    buffering_size = 1
-    buffering_interval = 60
-    retry_duration = 60
-    s3_backup_mode = "AllDocuments"
+    buffering_size        = 1
+    buffering_interval    = 60
+    retry_duration        = 60
+    s3_backup_mode        = "AllDocuments"
 
     cloudwatch_logging_options {
       enabled         = true
