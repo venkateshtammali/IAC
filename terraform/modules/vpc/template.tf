@@ -223,17 +223,17 @@ resource "aws_route_table" "eks_private_rt" {
 }
 
 # # Associating route table with private subnets
-resource "aws_route_table_association" "private-1-rt-association" {
+resource "aws_route_table_association" "eks_private_1_rt_assoc" {
   subnet_id      = "${aws_subnet.eks_private_1_sn.id}"
   route_table_id = "${aws_route_table.eks_private_rt.id}"
 }
 
-resource "aws_route_table_association" "private-2-rt-association" {
+resource "aws_route_table_association" "eks_private_2_rt_assoc" {
   subnet_id      = "${aws_subnet.eks_private_2_sn.id}"
   route_table_id = "${aws_route_table.eks_private_rt.id}"
 }
 
-resource "aws_route_table_association" "private-3-rt-association" {
+resource "aws_route_table_association" "eks_private_3_rt_assoc" {
   subnet_id      = "${aws_subnet.eks_private_3_sn.id}"
   route_table_id = "${aws_route_table.eks_private_rt.id}"
 }
@@ -317,6 +317,38 @@ resource "aws_route_table" "ec_private_rt" {
   }
 }
 
+# NACL for RDS
+resource "aws_network_acl" "rds_private_nacl" {
+  vpc_id = "${aws_vpc.vpc.id}"
+  subnet_ids = [
+    "${aws_subnet.rds_private_1_sn.id}",
+    "${aws_subnet.rds_private_2_sn.id}",
+    "${aws_subnet.rds_private_3_sn.id}"
+  ]
+
+  egress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  ingress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  tags = {
+    Name = "${var.env}-rds-private-rt"
+  }
+}
+
 # Associating Redis route table with private subnets
 resource "aws_route_table_association" "ec_private_1_rt_assoc" {
   subnet_id      = "${aws_subnet.ec_private_1_sn.id}"
@@ -331,4 +363,68 @@ resource "aws_route_table_association" "ec_private_2_rt_assoc" {
 resource "aws_route_table_association" "ec_private_3_rt_assoc" {
   subnet_id      = "${aws_subnet.ec_private_3_sn.id}"
   route_table_id = "${aws_route_table.ec_private_rt.id}"
+}
+
+
+# RDS subnets
+resource "aws_subnet" "rds_private_1_sn" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  cidr_block              = "10.0.10.0/24"
+  map_public_ip_on_launch = "false"
+  availability_zone       = "us-west-2a"
+
+  tags = {
+    Name = "${var.env}-rds-private-1-sn"
+  }
+}
+
+resource "aws_subnet" "rds_private_2_sn" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  cidr_block              = "10.0.11.0/24"
+  map_public_ip_on_launch = "false"
+  availability_zone       = "us-west-2b"
+
+  tags = {
+    Name = "${var.env}-rds-private-1-sn"
+  }
+}
+
+resource "aws_subnet" "rds_private_3_sn" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  cidr_block              = "10.0.12.0/24"
+  map_public_ip_on_launch = "false"
+  availability_zone       = "us-west-2c"
+
+  tags = {
+    Name = "${var.env}-rds-private-3-sn"
+  }
+}
+
+# RDS Route table
+resource "aws_route_table" "rds_private_rt" {
+  vpc_id = "${aws_vpc.vpc.id}"
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = "${aws_nat_gateway.nat.id}"
+  }
+
+  tags = {
+    Name = "${var.env}-rds-private-rt"
+  }
+}
+
+# Associating rds route tables with private subnets
+resource "aws_route_table_association" "rds_private_1_rt_assoc" {
+  subnet_id      = "${aws_subnet.rds_private_1_sn.id}"
+  route_table_id = "${aws_route_table.rds_private_rt.id}"
+}
+
+resource "aws_route_table_association" "rds_private_2_rt_assoc" {
+  subnet_id      = "${aws_subnet.rds_private_2_sn.id}"
+  route_table_id = "${aws_route_table.rds_private_rt.id}"
+}
+
+resource "aws_route_table_association" "rds_private_3_rt_assoc" {
+  subnet_id      = "${aws_subnet.rds_private_3_sn.id}"
+  route_table_id = "${aws_route_table.rds_private_rt.id}"
 }

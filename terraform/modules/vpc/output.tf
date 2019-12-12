@@ -30,6 +30,7 @@ output "eks_private_3_sn_id" {
   value = "${aws_subnet.eks_private_3_sn.id}"
 }
 
+# Redis subnets as outputs
 output "ec_private_1_sn_id" {
   value = "${aws_subnet.ec_private_1_sn.id}"
 }
@@ -40,4 +41,17 @@ output "ec_private_2_sn_id" {
 
 output "ec_private_3_sn_id" {
   value = "${aws_subnet.ec_private_3_sn.id}"
+}
+
+# RDS Subnets as outputs
+output "rds_private_1_sn_id" {
+  value = "${aws_subnet.rds_private_1_sn.id}"
+}
+
+output "rds_private_2_sn_id" {
+  value = "${aws_subnet.rds_private_2_sn.id}"
+}
+
+output "rds_private_3_sn_id" {
+  value = "${aws_subnet.rds_private_3_sn.id}"
 }
