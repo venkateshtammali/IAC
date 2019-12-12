@@ -7,3 +7,7 @@ variable "env" {
   description = "Environment for terraform"
   type        = "string"
 }
+
+variable "rds_password" {
+  type        = "string"
+}
