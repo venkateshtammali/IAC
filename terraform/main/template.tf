@@ -3,12 +3,12 @@ provider "aws" {
 }
 
 #  Create a VPC
-module "vpc" {
-  source = "../modules/vpc"
+# module "vpc" {
+#   source = "../modules/vpc"
 
-  region = "${var.region}"
-  env    = "${var.env}"
-}
+#   region = "${var.region}"
+#   env    = "${var.env}"
+# }
 
 # Create Firehose and ES
 # module "fh-es" {

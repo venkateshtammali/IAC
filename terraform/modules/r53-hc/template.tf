@@ -36,12 +36,12 @@ resource "aws_route53_health_check" "r53_healthcheck" {
   request_interval  = "30"
   measure_latency   = "1"
   tags = {
-    Name = "${var.env}-r53_hc"
+    Name = "${var.env}-r53-hc"
    }
 }
 
 resource "aws_cloudwatch_metric_alarm" "route53-healthcheck-alarm" {
-  alarm_name                = "r53_alarm"
+  alarm_name                = "r53-alarm"
   comparison_operator       = "LessThanOrEqualToThreshold"
   evaluation_periods        = "2"
   metric_name               = "HealthCheckStatus"
