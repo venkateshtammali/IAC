@@ -34,30 +34,30 @@ module "vpc" {
 #   subnet_ids   = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
 # }
 
-module "elasticcache" {
-  source = "./../modules/elasticcache"
-  subnet_ids = ["${module.vpc.ec_private_1_sn_id}", "${module.vpc.ec_private_2_sn_id}", "${module.vpc.ec_private_3_sn_id}"]
-  vpc_id     = "${module.vpc.vpc_id}"
-  region     = "${var.region}"
-  env        = "${var.env}"
-}
+# module "elasticcache" {
+#   source = "./../modules/elasticcache"
+#   subnet_ids = ["${module.vpc.ec_private_1_sn_id}", "${module.vpc.ec_private_2_sn_id}", "${module.vpc.ec_private_3_sn_id}"]
+#   vpc_id     = "${module.vpc.vpc_id}"
+#   region     = "${var.region}"
+#   env        = "${var.env}"
+# }
 
 #   env = "development"
 #   cluster_name = "${module.eks_cp.eks_cluster_name}"
 #   subnet_ids = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
 # }
 # create sns 
-# module "sns"{
-#   source = "./../modules/sns"
+module "sns"{
+  source = "./../modules/sns"
 
-#   env    = "${var.env}"
-#   email_addresses= ["abc@gmail.com"]
-# }
+  env    = "${var.env}"
+  email_addresses= ["abc@gmail.com"]
+}
 
 # #creating helathchecks  
-# module "r53-hc" {
-#   source = "./../modules/r53-hc"
+module "r53-hc" {
+  source = "./../modules/r53-hc"
 
-#   env    = "${var.env}"
-#   alarms_email= ["abc@gmail.com"]
-# }
+  env    = "${var.env}"
+  alarms_email= ["abc@gmail.com"]
+}
