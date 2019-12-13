@@ -50,21 +50,16 @@ provider "aws" {
 #   cluster_name = "${module.eks_cp.eks_cluster_name}"
 #   subnet_ids = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
 # }
-# create sns 
-module "sns"{
-  source = "./../modules/sns"
 
-  env    = "${var.env}"
-  email_addresses= ["abc@gmail.com"]
-}
-
-# #creating helathchecks  
+# #creating health checks  
 module "r53-hc" {
   source = "./../modules/r53-hc"
 
   env    = "${var.env}"
+  domain = "dev.apty.io"
   alarms_email= ["abc@gmail.com"]
 }
+
 # Create RDS
 # module "rds" {
 #   source = "./../modules/rds"
