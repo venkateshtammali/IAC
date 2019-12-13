@@ -1,31 +1,16 @@
 
 # Create SNS from module
-resource "aws_sns_topic" "sns" {
-  name = "topic-alarms"
-  delivery_policy = <<EOF
-{
-  "http": {
-    "defaultHealthyRetryPolicy": {
-      "minDelayTarget": 20,
-      "maxDelayTarget": 20,
-      "numRetries": 3,
-      "numMaxDelayRetries": 0,
-      "numNoDelayRetries": 0,
-      "numMinDelayRetries": 0,
-      "backoffFunction": "linear"
-    },
-    "disableSubscriptionOverrides": false,
-    "defaultThrottlePolicy": {
-      "maxReceivesPerSecond": 1
-    }
-  }
-}
-EOF
+ module "sns" {
+  source = "./../sns"
+
+  env    = "${var.env}"
+  email_addresses= ["abc@gmail.com"]
 }
 
 
 
-# Remove this
+
+
 resource "aws_sns_topic" "route53-healthcheck-sns" {
   name      = "route53-healthcheck"
 }

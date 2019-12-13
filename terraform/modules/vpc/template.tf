@@ -3,17 +3,17 @@
 # }
 
 
-# # VPC
-# resource "aws_vpc" "vpc" {
-#   cidr_block           = "10.0.0.0/16"
-#   instance_tenancy     = "default"
-#   enable_dns_support   = "true"
-#   enable_dns_hostnames = "true"
-#   enable_classiclink   = "false"
-#   tags = {
-#     Name = "${var.env}-vpc"
-#   }
-# }
+# VPC
+resource "aws_vpc" "vpc" {
+  cidr_block           = "10.0.0.0/16"
+  instance_tenancy     = "default"
+  enable_dns_support   = "true"
+  enable_dns_hostnames = "true"
+  enable_classiclink   = "false"
+  tags = {
+    Name = "${var.env}-vpc"
+  }
+}
 
 # # Subnets
 # resource "aws_subnet" "eks_public_1_sn" {
@@ -239,83 +239,83 @@
 # }
 
 # # Redis subnets
-# resource "aws_subnet" "ec_private_1_sn" {
-#   vpc_id                  = "${aws_vpc.vpc.id}"
-#   cidr_block              = "10.0.7.0/24"
-#   map_public_ip_on_launch = "false"
-#   availability_zone       = "us-west-2a"
+resource "aws_subnet" "ec_private_1_sn" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  cidr_block              = "10.0.7.0/24"
+  map_public_ip_on_launch = "false"
+  availability_zone       = "us-west-2a"
 
-#   tags = {
-#     Name = "${var.env}-ec-private-1-sn"
-#   }
-# }
+  tags = {
+    Name = "${var.env}-ec-private-1-sn"
+  }
+}
 
-# resource "aws_subnet" "ec_private_2_sn" {
-#   vpc_id                  = "${aws_vpc.vpc.id}"
-#   cidr_block              = "10.0.8.0/24"
-#   map_public_ip_on_launch = "false"
-#   availability_zone       = "us-west-2b"
+resource "aws_subnet" "ec_private_2_sn" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  cidr_block              = "10.0.8.0/24"
+  map_public_ip_on_launch = "false"
+  availability_zone       = "us-west-2b"
 
-#   tags = {
-#     Name = "${var.env}-ec-private-2-sn"
-#   }
-# }
+  tags = {
+    Name = "${var.env}-ec-private-2-sn"
+  }
+}
 
-# resource "aws_subnet" "ec_private_3_sn" {
-#   vpc_id                  = "${aws_vpc.vpc.id}"
-#   cidr_block              = "10.0.9.0/24"
-#   map_public_ip_on_launch = "false"
-#   availability_zone       = "us-west-2c"
+resource "aws_subnet" "ec_private_3_sn" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  cidr_block              = "10.0.9.0/24"
+  map_public_ip_on_launch = "false"
+  availability_zone       = "us-west-2c"
 
-#   tags = {
-#     Name = "${var.env}-ec-private-3-sn"
-#   }
-# }
+  tags = {
+    Name = "${var.env}-ec-private-3-sn"
+  }
+}
 
 # # Redis NACL
-# resource "aws_network_acl" "ec_private_nacl" {
-#   vpc_id = "${aws_vpc.vpc.id}"
-#   subnet_ids = [
-#     "${aws_subnet.ec_private_1_sn.id}",
-#     "${aws_subnet.ec_private_2_sn.id}",
-#     "${aws_subnet.ec_private_3_sn.id}"
-#   ]
+resource "aws_network_acl" "ec_private_nacl" {
+  vpc_id = "${aws_vpc.vpc.id}"
+  subnet_ids = [
+    "${aws_subnet.ec_private_1_sn.id}",
+    "${aws_subnet.ec_private_2_sn.id}",
+    "${aws_subnet.ec_private_3_sn.id}"
+  ]
 
-#   egress {
-#     protocol   = -1
-#     rule_no    = 100
-#     action     = "allow"
-#     cidr_block = "0.0.0.0/0"
-#     from_port  = 0
-#     to_port    = 0
-#   }
+  egress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
 
-#   ingress {
-#     protocol   = -1
-#     rule_no    = 100
-#     action     = "allow"
-#     cidr_block = "0.0.0.0/0"
-#     from_port  = 0
-#     to_port    = 0
-#   }
+  ingress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
 
-#   tags = {
-#     Name = "${var.env}-ec-private-nacl"
-#   }
-# }
+  tags = {
+    Name = "${var.env}-ec-private-nacl"
+  }
+}
 
 # # Redis Route table
-# resource "aws_route_table" "ec_private_rt" {
-#   vpc_id = "${aws_vpc.vpc.id}"
-#   route {
-#     cidr_block     = "0.0.0.0/0"
-#     nat_gateway_id = "${aws_nat_gateway.nat.id}"
-#   }
+resource "aws_route_table" "ec_private_rt" {
+  vpc_id = "${aws_vpc.vpc.id}"
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = "${aws_nat_gateway.nat.id}"
+  }
 
-#   tags = {
-#     Name = "${var.env}-ec-private-rt"
-#   }
-# }
+  tags = {
+    Name = "${var.env}-ec-private-rt"
+  }
+}
 
 # # NACL for RDS
 # resource "aws_network_acl" "rds_private_nacl" {
@@ -350,20 +350,20 @@
 # }
 
 # # Associating Redis route table with private subnets
-# resource "aws_route_table_association" "ec_private_1_rt_assoc" {
-#   subnet_id      = "${aws_subnet.ec_private_1_sn.id}"
-#   route_table_id = "${aws_route_table.ec_private_rt.id}"
-# }
+resource "aws_route_table_association" "ec_private_1_rt_assoc" {
+  subnet_id      = "${aws_subnet.ec_private_1_sn.id}"
+  route_table_id = "${aws_route_table.ec_private_rt.id}"
+}
 
-# resource "aws_route_table_association" "ec_private_2_rt_assoc" {
-#   subnet_id      = "${aws_subnet.ec_private_2_sn.id}"
-#   route_table_id = "${aws_route_table.ec_private_rt.id}"
-# }
+resource "aws_route_table_association" "ec_private_2_rt_assoc" {
+  subnet_id      = "${aws_subnet.ec_private_2_sn.id}"
+  route_table_id = "${aws_route_table.ec_private_rt.id}"
+}
 
-# resource "aws_route_table_association" "ec_private_3_rt_assoc" {
-#   subnet_id      = "${aws_subnet.ec_private_3_sn.id}"
-#   route_table_id = "${aws_route_table.ec_private_rt.id}"
-# }
+resource "aws_route_table_association" "ec_private_3_rt_assoc" {
+  subnet_id      = "${aws_subnet.ec_private_3_sn.id}"
+  route_table_id = "${aws_route_table.ec_private_rt.id}"
+}
 
 
 # # RDS subnets
