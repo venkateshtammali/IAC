@@ -15,8 +15,3 @@ variable "subnet_ids" {
   type = list(string)
 }
 
-variable "at_rest_encryption_enabled" {
-  type        = bool
-  default     = true
-  description = "Enable encryption at rest"
-}

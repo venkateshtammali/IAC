@@ -24,12 +24,12 @@ resource "aws_elasticache_replication_group" "ec" {
   engine               = "redis"
   node_type            = "cache.t2.micro"
   parameter_group_name = "default.redis5.0"
-  number_cache_clusters = 2
+  number_cache_clusters = 1
   engine_version       = "5.0.5"
-  replication_group_id          = "${var.env}-rg"
-  replication_group_description = "${var.env}-rd"
+  replication_group_id          = "${var.env}-ec-rg"
+  replication_group_description = "rediscluster"
   automatic_failover_enabled    = true
-  at_rest_encryption_enabled    = var.at_rest_encryption_enabled
+  at_rest_encryption_enabled    = true
   port                 = 6379
   subnet_group_name    = "${aws_elasticache_subnet_group.ec_sng.name}"
   security_group_ids   = ["${aws_security_group.ec_sg.id}"]
