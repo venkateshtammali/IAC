@@ -31,7 +31,7 @@ resource "aws_subnet" "eks_public_1_sn" {
 
 resource "aws_subnet" "eks_public_2_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
-  cidr_block              = "10.0.3.0/24"
+  cidr_block              = "10.0.2.0/24"
   map_public_ip_on_launch = "true"
   availability_zone       = "us-west-2b"
 
@@ -44,7 +44,7 @@ resource "aws_subnet" "eks_public_2_sn" {
 
 resource "aws_subnet" "eks_public_3_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
-  cidr_block              = "10.0.5.0/24"
+  cidr_block              = "10.0.3.0/24"
   map_public_ip_on_launch = "true"
   availability_zone       = "us-west-2c"
 
@@ -57,7 +57,7 @@ resource "aws_subnet" "eks_public_3_sn" {
 
 resource "aws_subnet" "eks_private_1_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
-  cidr_block              = "10.0.2.0/24"
+  cidr_block              = "10.0.4.0/24"
   map_public_ip_on_launch = "false"
   availability_zone       = "us-west-2a"
 
@@ -70,7 +70,7 @@ resource "aws_subnet" "eks_private_1_sn" {
 
 resource "aws_subnet" "eks_private_2_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
-  cidr_block              = "10.0.4.0/24"
+  cidr_block              = "10.0.5.0/24"
   map_public_ip_on_launch = "false"
   availability_zone       = "us-west-2b"
 
@@ -222,7 +222,7 @@ resource "aws_route_table" "eks_private_rt" {
   }
 }
 
-# # Associating route table with private subnets
+# Associating route table with private subnets
 resource "aws_route_table_association" "eks_private_1_rt_assoc" {
   subnet_id      = "${aws_subnet.eks_private_1_sn.id}"
   route_table_id = "${aws_route_table.eks_private_rt.id}"
