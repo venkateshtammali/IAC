@@ -37,22 +37,22 @@ module "vpc" {
 # }
 
 # Create Redis
-# module "elasticcache" {
-#   source = "./../modules/elasticcache"
+module "elasticcache" {
+  source = "./../modules/elasticcache"
 
-#   subnet_ids = ["${module.vpc.ec_private_1_sn_id}", "${module.vpc.ec_private_2_sn_id}", "${module.vpc.ec_private_3_sn_id}"]
-#   vpc_id     = "${module.vpc.vpc_id}"
-#   region     = "${var.region}"
-#   env        = "${var.env}"
-# }
+  subnet_ids = ["${module.vpc.ec_private_1_sn_id}", "${module.vpc.ec_private_2_sn_id}", "${module.vpc.ec_private_3_sn_id}"]
+  vpc_id     = "${module.vpc.vpc_id}"
+  region     = "${var.region}"
+  env        = "${var.env}"
+}
 
 # Create RDS
-module "rds" {
-  source = "./../modules/rds"
+# module "rds" {
+#   source = "./../modules/rds"
 
-  subnet_ids      = ["${module.vpc.rds_private_1_sn_id}", "${module.vpc.rds_private_2_sn_id}", "${module.vpc.rds_private_3_sn_id}"]
-  vpc_id          = "${module.vpc.vpc_id}"
-  service_acronym = "app"
-  env             = "${var.env}"
-  password        = "${var.rds_password}"
-}
+#   subnet_ids      = ["${module.vpc.rds_private_1_sn_id}", "${module.vpc.rds_private_2_sn_id}", "${module.vpc.rds_private_3_sn_id}"]
+#   vpc_id          = "${module.vpc.vpc_id}"
+#   service_acronym = "app"
+#   env             = "${var.env}"
+#   password        = "${var.rds_password}"
+# }
