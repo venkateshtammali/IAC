@@ -166,7 +166,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
- # route tables
+# route tables
 resource "aws_route_table" "eks_public_rt" {
   vpc_id = "${aws_vpc.vpc.id}"
   route {
@@ -222,7 +222,7 @@ resource "aws_route_table" "eks_private_rt" {
   }
 }
 
- # Associating route table with private subnets
+# Associating route table with private subnets
 resource "aws_route_table_association" "eks_private_1_rt_assoc" {
   subnet_id      = "${aws_subnet.eks_private_1_sn.id}"
   route_table_id = "${aws_route_table.eks_private_rt.id}"
@@ -317,7 +317,7 @@ resource "aws_route_table" "ec_private_rt" {
   }
 }
 
- # NACL for RDS
+# NACL for RDS
 resource "aws_network_acl" "rds_private_nacl" {
   vpc_id = "${aws_vpc.vpc.id}"
   subnet_ids = [
@@ -366,7 +366,7 @@ resource "aws_route_table_association" "ec_private_3_rt_assoc" {
 }
 
 
- # RDS subnets
+# RDS subnets
 resource "aws_subnet" "rds_private_1_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.10.0/24"
@@ -400,7 +400,7 @@ resource "aws_subnet" "rds_private_3_sn" {
   }
 }
 
- # RDS Route table
+# RDS Route table
 resource "aws_route_table" "rds_private_rt" {
   vpc_id = "${aws_vpc.vpc.id}"
   route {
@@ -413,7 +413,7 @@ resource "aws_route_table" "rds_private_rt" {
   }
 }
 
- # Associating rds route tables with private subnets
+# Associating rds route tables with private subnets
 resource "aws_route_table_association" "rds_private_1_rt_assoc" {
   subnet_id      = "${aws_subnet.rds_private_1_sn.id}"
   route_table_id = "${aws_route_table.rds_private_rt.id}"

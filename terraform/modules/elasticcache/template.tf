@@ -26,8 +26,8 @@ resource "aws_elasticache_replication_group" "ec" {
   parameter_group_name = "default.redis5.0"
   number_cache_clusters = 1
   engine_version       = "5.0.5"
-  replication_group_id          = "${var.env}-ec-rg"
-  replication_group_description = "rediscluster"
+  replication_group_id          = "${var.env}-ec"
+  replication_group_description = "redis cluster"
   automatic_failover_enabled    = true
   at_rest_encryption_enabled    = true
   port                 = 6379
