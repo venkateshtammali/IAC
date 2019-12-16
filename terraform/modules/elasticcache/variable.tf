@@ -1,6 +1,5 @@
 variable "region" {
-  type        = "string"
-  default     = "us-east-1"
+  type = "string"
 }
 
 variable "env" {
@@ -9,7 +8,7 @@ variable "env" {
 }
 
 variable "vpc_id" {
-  type        = "string"
+  type = "string"
 }
 
 variable "subnet_ids" {

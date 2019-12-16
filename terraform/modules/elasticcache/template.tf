@@ -31,5 +31,5 @@ resource "aws_elasticache_replication_group" "ec" {
   automatic_failover_enabled    = true
   port                 = 6379
   subnet_group_name    = "${aws_elasticache_subnet_group.ec_sng.name}"
-  security_group_ids = ["${aws_security_group.ec_sg.id}"]
+  security_group_ids   = ["${aws_security_group.ec_sg.id}"]
 }
