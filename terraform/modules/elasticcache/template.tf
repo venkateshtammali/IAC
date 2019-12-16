@@ -21,16 +21,16 @@ resource "aws_elasticache_subnet_group" "ec_sng" {
   subnet_ids = "${var.subnet_ids}"
 }
 resource "aws_elasticache_replication_group" "ec" {
-  engine               = "redis"
-  node_type            = "cache.t2.micro"
-  parameter_group_name = "default.redis5.0"
-  number_cache_clusters = 1
-  engine_version       = "5.0.5"
+  engine                        = "redis"
+  node_type                     = "cache.t2.micro"
+  parameter_group_name          = "default.redis5.0"
+  number_cache_clusters         = 2
+  engine_version                = "5.0.5"
   replication_group_id          = "${var.env}-ec"
   replication_group_description = "redis cluster"
   automatic_failover_enabled    = true
   at_rest_encryption_enabled    = true
-  port                 = 6379
-  subnet_group_name    = "${aws_elasticache_subnet_group.ec_sng.name}"
-  security_group_ids   = ["${aws_security_group.ec_sg.id}"]
+  port                          = 6379
+  subnet_group_name             = "${aws_elasticache_subnet_group.ec_sng.name}"
+  security_group_ids            = ["${aws_security_group.ec_sg.id}"]
 }
