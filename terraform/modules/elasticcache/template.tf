@@ -29,6 +29,7 @@ resource "aws_elasticache_replication_group" "ec" {
   replication_group_id          = "${var.env}-rg"
   replication_group_description = "${var.env}-rd"
   automatic_failover_enabled    = true
+  at_rest_encryption_enabled    = var.at_rest_encryption_enabled
   port                 = 6379
   subnet_group_name    = "${aws_elasticache_subnet_group.ec_sng.name}"
   security_group_ids   = ["${aws_security_group.ec_sg.id}"]
