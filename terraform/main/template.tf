@@ -51,11 +51,11 @@ provider "aws" {
 # #creating health checks  
 module "r53-hc" {
   source = "./../modules/r53-hc"
-  
-  env    = "${var.env}"
-  domain = "dev.apty.io"
-  alarms_email= ["abc@gmail.com"]
-  
+
+  env          = "${var.env}"
+  domain       = "dev.apty.io"
+  alarms_email = ["tvenkatesh4b6@gmail.com"]
+
 }
 
 # Create RDS

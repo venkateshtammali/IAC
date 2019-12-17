@@ -3,7 +3,7 @@ variable "email_addresses" {
   description = "Email address to send notifications to"
 }
 
-variable "env"{
+variable "display_name"{
   type = "string"
 }
 

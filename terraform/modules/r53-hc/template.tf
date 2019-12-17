@@ -3,8 +3,8 @@
  module "sns" {
   source = "./../sns"
 
-  env    = "${var.env}"
-  email_addresses= ["abc@gmail.com"]
+  display_name  = "${var.env}-sns"
+  email_addresses= ["tvenkatesh4b6@gmail.com"]
 }
 
 
@@ -21,8 +21,8 @@ resource "aws_route53_health_check" "r53_hc" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "route53-healthcheck-alarm" {
-  alarm_name                = "${var.env}-${var.domain}-alarm"
+resource "aws_cloudwatch_metric_alarm" "route53-healthcheck-alm" {
+  alarm_name                = "${var.env}-${var.domain}-alm"
   comparison_operator       = "LessThanOrEqualToThreshold"
   evaluation_periods        = "2"
   metric_name               = "HealthCheckStatus"
