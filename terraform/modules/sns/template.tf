@@ -14,8 +14,8 @@ data "template_file" "cloudformation_sns_stack" {
 
   vars = {
     display_name  = "${var.display_name}-cf"
-    kms_id = "${data.aws_kms_alias.sns_kms.target_key_id}"
-    subscriptions = "${join("," , formatlist("{ \"Endpoint\": \"%s\", \"Protocol\": \"%s\"  }", var.email_addresses, "email"))}"
+    kms_id        = "${data.aws_kms_alias.sns_kms.target_key_id}"
+    subscriptions = "${join(",", formatlist("{ \"Endpoint\": \"%s\", \"Protocol\": \"%s\"  }", var.email_addresses, "email"))}"
   }
 }
 

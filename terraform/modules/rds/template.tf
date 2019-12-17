@@ -41,10 +41,10 @@ resource "aws_db_instance" "postgres" {
   identifier     = "${local.prefix}-rds"
 
   # Storage
-  allocated_storage     = 20 # In GB
-  max_allocated_storage = 30
-  storage_encrypted     = true
-  kms_key_id            = "${data.aws_kms_alias.rds_kms.target_key_arn}"
+  allocated_storage         = 20 # In GB
+  max_allocated_storage     = 30
+  storage_encrypted         = true
+  kms_key_id                = "${data.aws_kms_alias.rds_kms.target_key_arn}"
   final_snapshot_identifier = "some-snap" #Explore during backup
 
   # Accessibility
@@ -53,7 +53,7 @@ resource "aws_db_instance" "postgres" {
   password            = "${var.password}" # password for login
   port                = 5432
   publicly_accessible = false
-  ca_cert_identifier = "rds-ca-2019"
+  ca_cert_identifier  = "rds-ca-2019"
 
   # Networking
   db_subnet_group_name   = "${aws_db_subnet_group.rds_sng.name}"
@@ -64,7 +64,7 @@ resource "aws_db_instance" "postgres" {
   # Upgrades
   allow_major_version_upgrade = false
   auto_minor_version_upgrade  = true
-  apply_immediately = true
+  apply_immediately           = true
 
   copy_tags_to_snapshot = true
   deletion_protection   = true

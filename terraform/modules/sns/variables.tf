@@ -3,10 +3,10 @@ variable "email_addresses" {
   description = "Email address to send notifications to"
 }
 
-variable "display_name"{
+variable "display_name" {
   type = "string"
 }
 
-variable "default_tags"{
-  type ="map"
+variable "default_tags" {
+  type = "map"
 }

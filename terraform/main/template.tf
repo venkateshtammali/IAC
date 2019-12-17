@@ -9,12 +9,12 @@ locals {
 }
 
 #  Create a VPC
-# module "vpc" {
-#   source = "../modules/vpc"
+module "vpc" {
+  source = "../modules/vpc"
 
-#   region = "${var.region}"
-#   env    = "${var.env}"
-# }
+  region = "${var.region}"
+  env    = "${var.env}"
+}
 
 # Create Firehose and ES
 # module "fh-es" {
@@ -60,7 +60,7 @@ module "r53-hc" {
 
   env          = "${var.env}"
   domain       = "dev.apty.io"
-  alarms_email = ["tvenkatesh4b6@gmail.com"]
+  alarms_email = ["abc@gmail.com"]
   default_tags = "${local.default_tags}"
 }
 
