@@ -1,5 +1,6 @@
 resource "aws_iam_role" "ng_rl" {
   name = "${var.env}-ng-rl"
+  tags = "${merge(var.default_tags, map("Name", "${var.env}-ng-rl", ))}"
 
   assume_role_policy = jsonencode({
     Statement = [{
@@ -31,6 +32,7 @@ resource "aws_iam_role_policy_attachment" "ng_ecr_pl" {
 resource "aws_eks_node_group" "ng" {
   version         = "1.14"
   cluster_name    = "${var.cluster_name}"
+  tags            = "${merge(var.default_tags, map("Name", "${var.cluster_name}", ))}"
   node_group_name = "${var.env}-ng"
   node_role_arn   = "${aws_iam_role.ng_rl.arn}"
   subnet_ids      = "${var.subnet_ids}"

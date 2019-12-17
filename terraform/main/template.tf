@@ -32,7 +32,7 @@ module "vpc" {
 
 #   env          = "development"
 #   default_tags = "${local.default_tags}"
-#   cluster_name = "${module.eks_cp.eks_cluster_name}"
+#   cluster_name = "${var.env}-eks"
 #   subnet_ids   = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
 # }
 
@@ -50,10 +50,10 @@ module "vpc" {
 module "elasticcache" {
   source = "./../modules/elasticcache"
 
-  subnet_ids = ["${module.vpc.ec_private_1_sn_id}", "${module.vpc.ec_private_2_sn_id}", "${module.vpc.ec_private_3_sn_id}"]
-  vpc_id     = "${module.vpc.vpc_id}"
-  region     = "${var.region}"
-  env        = "${var.env}"
+  subnet_ids   = ["${module.vpc.ec_private_1_sn_id}", "${module.vpc.ec_private_2_sn_id}", "${module.vpc.ec_private_3_sn_id}"]
+  vpc_id       = "${module.vpc.vpc_id}"
+  region       = "${var.region}"
+  env          = "${var.env}"
   default_tags = "${local.default_tags}"
 }
 

@@ -7,12 +7,7 @@ resource "aws_elasticsearch_domain" "es" {
 
     dedicated_master_enabled = "false"
   }
-  tags = "${merge(
-    var.default_tags,
-    map(
-      "Name", "${var.env}-es",
-    )
-  )}"
+
   advanced_options = {
     "rest.action.multi.allow_explicit_index" = "true" # double quotes are required here
   }
@@ -21,5 +16,6 @@ resource "aws_elasticsearch_domain" "es" {
     ebs_enabled = true
     volume_size = 10
   }
+  tags = "${merge(var.default_tags, map("Name", "${var.env}-es", ))}"
 }
 

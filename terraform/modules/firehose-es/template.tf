@@ -24,6 +24,7 @@ module "es" {
 # Create log group for Firehose
 resource "aws_cloudwatch_log_group" "fh_lg" {
   name = "/aws/kinesisfirehose/${local.firehose_name}"
+  tags = "${merge(var.default_tags, map("Name", "/aws/kinesisfirehose/${local.firehose_name}", ))}"
 }
 
 # Create log stream for S3
