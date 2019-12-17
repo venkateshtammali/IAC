@@ -9,3 +9,7 @@ variable "domain" {
 variable "alarms_email" {
   type = "list"
 }
+ 
+variable "default_tags"{
+  type ="map"
+}

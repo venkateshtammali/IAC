@@ -16,10 +16,9 @@ resource "aws_route53_health_check" "r53_hc" {
   failure_threshold = "3"
   request_interval  = "30"
   measure_latency   = "1"
-  tags = {
-    Name = "${var.env}-${var.domain}-hc"
-  }
-}
+  tags = "${merge(var.default_tags,maps("Name,"${var.env}-${var.domain}-hc,))}"
+
+  
 
 resource "aws_cloudwatch_metric_alarm" "route53-healthcheck-alm" {
   alarm_name                = "${var.env}-${var.domain}-alm"

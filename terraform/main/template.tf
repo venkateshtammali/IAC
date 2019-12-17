@@ -1,6 +1,11 @@
 provider "aws" {
   region = "${var.region}"
 }
+locals {
+  deafault_tags = {
+    Enviroment = "development"
+  }
+}
 
 #  Create a VPC
 # module "vpc" {
@@ -55,7 +60,7 @@ module "r53-hc" {
   env          = "${var.env}"
   domain       = "dev.apty.io"
   alarms_email = ["tvenkatesh4b6@gmail.com"]
-
+  default_tags = "${locals.deafault_tags}"
 }
 
 # Create RDS
