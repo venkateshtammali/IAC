@@ -8,14 +8,7 @@
 }
 
 
-
-
-
-resource "aws_sns_topic" "route53-healthcheck-sns" {
-  name      = "route53-healthcheck"
-}
-
-resource "aws_route53_health_check" "r53_healthcheck" {
+resource "aws_route53_health_check" "r53_hc" {
   fqdn              = "${var.domain}"
   port              = 443
   type              = "HTTPS"
@@ -38,9 +31,9 @@ resource "aws_cloudwatch_metric_alarm" "route53-healthcheck-alarm" {
   statistic                 = "Minimum"
   threshold                 = "2"
   alarm_description         = "This metric monitors whether the server is down or not."
-  alarm_actions             = ["${aws_sns_topic.route53-healthcheck-sns.arn}"]
+  alarm_actions             = ["${module.sns.arn}"]
   dimensions = {
-    HealthCheckId           = "${aws_route53_health_check.r53_healthcheck.id}"
+    HealthCheckId           = "${aws_route53_health_check.r53_hc.id}"
   }
 }
 
