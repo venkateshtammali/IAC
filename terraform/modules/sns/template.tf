@@ -2,6 +2,13 @@ data "aws_kms_alias" "sns_kms" {
   name = "alias/aws/sns"
 }
 
+locals {
+  default_tags = {
+    Enviroment = "development"
+  }
+}
+
+
 data "template_file" "cloudformation_sns_stack" {
   template = "${file("${path.module}/templates/email-sns-stack.json.tpl")}"
 

@@ -1,8 +1,9 @@
 provider "aws" {
   region = "${var.region}"
 }
+
 locals {
-  deafault_tags = {
+  default_tags = {
     Enviroment = "development"
   }
 }
@@ -60,7 +61,7 @@ module "r53-hc" {
   env          = "${var.env}"
   domain       = "dev.apty.io"
   alarms_email = ["tvenkatesh4b6@gmail.com"]
-  default_tags = "${locals.deafault_tags}"
+  default_tags = "${local.default_tags}"
 }
 
 # Create RDS
