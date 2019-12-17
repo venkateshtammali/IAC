@@ -2,12 +2,19 @@ provider "aws" {
   region = "${var.region}"
 }
 
+locals {
+  default_tags = {
+    Environment = "development"
+  }
+}
+
 #  Create a VPC
 module "vpc" {
   source = "../modules/vpc"
 
-  region = "${var.region}"
-  env    = "${var.env}"
+  region       = "${var.region}"
+  env          = "${var.env}"
+  default_tags = "${local.default_tags}"
 }
 
 # Create Firehose and ES
@@ -16,6 +23,7 @@ module "vpc" {
 
 #   region = "${var.region}"
 #   env    = "${var.env}"
+#   default_tags = "${local.default_tags}"
 # }
 
 # Create EKS control plane
@@ -23,6 +31,7 @@ module "vpc" {
 #   source = "./../modules/eks/control-plane"
 
 #   env          = "development"
+#   default_tags = "${local.default_tags}"
 #   cluster_name = "${module.eks_cp.eks_cluster_name}"
 #   subnet_ids   = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
 # }
@@ -32,6 +41,7 @@ module "vpc" {
 #   source = "./../modules/eks/node-group"
 
 #   env          = "development"
+#   default_tags = "${local.default_tags}"
 #   cluster_name = "${module.eks_cp.eks_cluster_name}"
 #   subnet_ids   = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
 # }
@@ -44,6 +54,7 @@ module "elasticcache" {
   vpc_id     = "${module.vpc.vpc_id}"
   region     = "${var.region}"
   env        = "${var.env}"
+  default_tags = "${local.default_tags}"
 }
 
 # Create RDS
@@ -55,4 +66,5 @@ module "elasticcache" {
 #   service_acronym = "app"
 #   env             = "${var.env}"
 #   password        = "${var.rds_password}"
+#   default_tags    = "${local.default_tags}"
 # }

@@ -75,8 +75,12 @@ resource "aws_db_instance" "postgres" {
 
   # Monitoring
   monitoring_interval = 0
+  tags = "${merge(
+    var.default_tags,
+    map(
+      "Name", "${local.prefix}-rds",
+    )
+  )}"
 
-  tags = {
-    Name = "${local.prefix}-rds"
-  }
 }
+
