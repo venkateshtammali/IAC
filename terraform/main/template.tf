@@ -31,19 +31,27 @@ module "eks_cp" {
   source = "./../modules/eks/control-plane"
 
   env          = "development"
-  default_tags = "${local.default_tags}"
   cluster_name = "${var.env}-eks"
   subnet_ids   = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
+  default_tags = "${local.default_tags}"
 }
 
-# Create EKS Worker plane
 module "eks_ng" {
   source = "./../modules/eks/node-group"
 
   env          = "development"
-  default_tags = "${local.default_tags}"
   cluster_name = "${module.eks_cp.eks_cluster_name}"
   subnet_ids   = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
+  default_tags = "${local.default_tags}"
+}
+
+module "alb-ingress-controller" {
+  source  = "iplabs/alb-ingress-controller/kubernetes"
+  version = "2.0.0"
+  aws_iam_path_prefix = "/test/"
+  aws_region_name = "us-west-2"
+  k8s_cluster_name = "${module.eks_cp.eks_cluster_name}"
+  aws_vpc_id     = "${module.vpc.vpc_id}"
 }
 
 # Create Redis
@@ -55,8 +63,6 @@ module "elasticcache" {
   region     = "${var.region}"
   env        = "${var.env}"
 }
-
-
 
 # creating health checks  
 module "r53-hc" {

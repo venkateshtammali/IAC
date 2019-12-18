@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    project: nginx
+  name: nginx-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      project: nginx-pods
+  template:
+    metadata:
+      labels:
+        project: nginx-pods
+    spec:
+      containers:
+      - image: nginx
+        name: nginx-container
