@@ -24,7 +24,7 @@ module "es" {
 # Create log group for Firehose
 resource "aws_cloudwatch_log_group" "fh_lg" {
   name = "/aws/kinesisfirehose/${local.firehose_name}"
-  tags = "${merge(var.default_tags, map("Name", "/aws/kinesisfirehose/${local.firehose_name}", ))}"
+
 }
 
 # Create log stream for S3
@@ -125,7 +125,6 @@ resource "aws_kinesis_firehose_delivery_stream" "fh" {
   destination = "elasticsearch"
   server_side_encryption {
     enabled = true
-    tags    = "${merge(var.default_tags, map("Name", "${local.firehose_name}", ))}"
   }
 
   s3_configuration {
@@ -159,4 +158,5 @@ resource "aws_kinesis_firehose_delivery_stream" "fh" {
       log_stream_name = "${aws_cloudwatch_log_stream.es_ls.name}"
     }
   }
+  tags = "${merge(var.default_tags, map("Name", "/aws/kinesisfirehose/${local.firehose_name}", ))}"
 }
