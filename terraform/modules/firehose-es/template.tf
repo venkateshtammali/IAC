@@ -125,6 +125,7 @@ resource "aws_kinesis_firehose_delivery_stream" "fh" {
   destination = "elasticsearch"
   server_side_encryption {
     enabled = true
+    tags    = "${merge(var.default_tags, map("Name", "${local.firehose_name}", ))}"
   }
 
   s3_configuration {
