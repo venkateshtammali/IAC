@@ -4,7 +4,7 @@ module "sns" {
   source = "./../sns"
 
   display_name    = "${var.env}-sns"
-  default_tags = "${var.default_tags}"
+  default_tags    = "${var.default_tags}"
   email_addresses = ["abc@gmail.com"]
 }
 

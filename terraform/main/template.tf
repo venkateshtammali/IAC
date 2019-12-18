@@ -17,44 +17,44 @@ module "vpc" {
 }
 
 # Create Firehose and ES
-# module "fh-es" {
-#   source = "./../modules/firehose-es"
+module "fh-es" {
+  source = "./../modules/firehose-es"
 
-#   region = "${var.region}"
-#   env    = "${var.env}"
-# }
+  region = "${var.region}"
+  env    = "${var.env}"
+}
 
 # Create EKS control plane
-# module "eks_cp" {
-#   source = "./../modules/eks/control-plane"
+module "eks_cp" {
+  source = "./../modules/eks/control-plane"
 
-#   env          = "development"
-#   cluster_name = "${module.eks_cp.eks_cluster_name}"
-#   subnet_ids   = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
-# }
+  env          = "development"
+  cluster_name = "${module.eks_cp.eks_cluster_name}"
+  subnet_ids   = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
+}
 
 # Create EKS Worker plane
-# module "eks_ng" {
-#   source = "./../modules/eks/node-group"
+module "eks_ng" {
+  source = "./../modules/eks/node-group"
 
-#   env          = "development"
-#   cluster_name = "${module.eks_cp.eks_cluster_name}"
-#   subnet_ids   = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
-# }
+  env          = "development"
+  cluster_name = "${module.eks_cp.eks_cluster_name}"
+  subnet_ids   = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
+}
 
 # Create Redis
-# module "elasticcache" {
-#   source = "./../modules/elasticcache"
+module "elasticcache" {
+  source = "./../modules/elasticcache"
 
-#   subnet_ids = ["${module.vpc.ec_private_1_sn_id}", "${module.vpc.ec_private_2_sn_id}", "${module.vpc.ec_private_3_sn_id}"]
-#   vpc_id     = "${module.vpc.vpc_id}"
-#   region     = "${var.region}"
-#   env        = "${var.env}"
-# }
+  subnet_ids = ["${module.vpc.ec_private_1_sn_id}", "${module.vpc.ec_private_2_sn_id}", "${module.vpc.ec_private_3_sn_id}"]
+  vpc_id     = "${module.vpc.vpc_id}"
+  region     = "${var.region}"
+  env        = "${var.env}"
+}
 
 
 
-# #creating health checks  
+# creating health checks  
 module "r53-hc" {
   source = "./../modules/r53-hc"
 
@@ -65,12 +65,12 @@ module "r53-hc" {
 }
 
 # Create RDS
-# module "rds" {
-#   source = "./../modules/rds"
+module "rds" {
+  source = "./../modules/rds"
 
-#   subnet_ids      = ["${module.vpc.rds_private_1_sn_id}", "${module.vpc.rds_private_2_sn_id}", "${module.vpc.rds_private_3_sn_id}"]
-#   vpc_id          = "${module.vpc.vpc_id}"
-#   service_acronym = "app"
-#   env             = "${var.env}"
-#   password        = "${var.rds_password}"
-# }
+  subnet_ids      = ["${module.vpc.rds_private_1_sn_id}", "${module.vpc.rds_private_2_sn_id}", "${module.vpc.rds_private_3_sn_id}"]
+  vpc_id          = "${module.vpc.vpc_id}"
+  service_acronym = "app"
+  env             = "${var.env}"
+  password        = "${var.rds_password}"
+}
