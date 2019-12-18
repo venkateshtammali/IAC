@@ -9,3 +9,7 @@ variable "cluster_name" {
 variable "subnet_ids" {
   type = list(string)
 }
+
+variable "default_tags" {
+  type = "map"
+}

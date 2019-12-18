@@ -5,3 +5,7 @@ variable "env" {
 variable "region" {
   type = "string"
 }
+
+variable "default_tags" {
+  type = "map"
+}

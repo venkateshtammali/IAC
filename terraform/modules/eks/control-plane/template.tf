@@ -4,6 +4,7 @@ locals {
 
 resource "aws_iam_role" "eks_rl" {
   name = "${var.env}-eks-rl"
+  tags = "${merge(var.default_tags, map("Name", "${var.env}-eks-rl", ))}"
 
   assume_role_policy = <<POLICY
 {
@@ -36,7 +37,9 @@ resource "aws_cloudwatch_log_group" "eks_cp_lg" {
 }
 
 resource "aws_eks_cluster" "eks" {
-  name                      = "${local.cluster_name}"
+  name = "${local.cluster_name}"
+  tags = "${merge(var.default_tags, map("Name", "${local.cluster_name}", ))}"
+
   version                   = "1.14"
   role_arn                  = "${aws_iam_role.eks_rl.arn}"
   enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
@@ -45,6 +48,7 @@ resource "aws_eks_cluster" "eks" {
     endpoint_private_access = false
     endpoint_public_access  = true
     subnet_ids              = "${var.subnet_ids}"
+
   }
 
   depends_on = [

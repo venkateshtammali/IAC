@@ -4,7 +4,7 @@ provider "aws" {
 
 locals {
   default_tags = {
-    Enviroment = "development"
+    Environment = "development"
   }
 }
 
@@ -12,16 +12,18 @@ locals {
 module "vpc" {
   source = "../modules/vpc"
 
-  region = "${var.region}"
-  env    = "${var.env}"
+  region       = "${var.region}"
+  env          = "${var.env}"
+  default_tags = "${local.default_tags}"
 }
 
 # Create Firehose and ES
 module "fh-es" {
   source = "./../modules/firehose-es"
 
-  region = "${var.region}"
-  env    = "${var.env}"
+  region       = "${var.region}"
+  env          = "${var.env}"
+  default_tags = "${local.default_tags}"
 }
 
 # Create EKS control plane
@@ -29,7 +31,8 @@ module "eks_cp" {
   source = "./../modules/eks/control-plane"
 
   env          = "development"
-  cluster_name = "${module.eks_cp.eks_cluster_name}"
+  default_tags = "${local.default_tags}"
+  cluster_name = "${var.env}-eks"
   subnet_ids   = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
 }
 
@@ -38,6 +41,7 @@ module "eks_ng" {
   source = "./../modules/eks/node-group"
 
   env          = "development"
+  default_tags = "${local.default_tags}"
   cluster_name = "${module.eks_cp.eks_cluster_name}"
   subnet_ids   = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
 }
@@ -73,4 +77,5 @@ module "rds" {
   service_acronym = "app"
   env             = "${var.env}"
   password        = "${var.rds_password}"
+  default_tags    = "${local.default_tags}"
 }

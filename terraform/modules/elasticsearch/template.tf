@@ -16,4 +16,6 @@ resource "aws_elasticsearch_domain" "es" {
     ebs_enabled = true
     volume_size = 10
   }
+  tags = "${merge(var.default_tags, map("Name", "${var.env}-es", ))}"
 }
+

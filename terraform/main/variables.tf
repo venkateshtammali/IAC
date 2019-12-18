@@ -8,6 +8,12 @@ variable "env" {
   type        = "string"
 }
 
+<<<<<<< HEAD
 # variable "rds_password" {
 #   type        = "string"
 # }
+=======
+variable "rds_password" {
+  type = "string"
+}
+>>>>>>> b696b2a78a34452782341eb594dc2bd511f79ef2
