@@ -5,7 +5,7 @@ module "sns" {
 
   display_name    = "${var.env}-sns"
   default_tags    = "${var.default_tags}"
-  email_addresses = ["abc@gmail.com"]
+  email_addresses = "${var.alarms_email}"
 }
 
 
