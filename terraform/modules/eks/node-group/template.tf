@@ -29,6 +29,18 @@ resource "aws_iam_role_policy_attachment" "ng_ecr_pl" {
   role       = aws_iam_role.ng_rl.name
 }
 
+resource "aws_iam_role_policy_attachment" "ng_tags_pl" {
+  policy_arn = "arn:aws:iam::aws:policy/ResourceGroupsandTagEditorReadOnlyAccess"
+  role       = aws_iam_role.ng_rl.name
+}
+
+# TODO: Create ALBIngress policy using terraform
+# https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
+resource "aws_iam_role_policy_attachment" "ng_ingress_pl" {
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role       = aws_iam_role.ng_rl.name
+}
+
 resource "aws_eks_node_group" "ng" {
   version         = "1.14"
   cluster_name    = "${var.cluster_name}"

@@ -10,7 +10,13 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = "true"
   enable_classiclink   = "false"
   tags                 = "${merge(var.default_tags, map("Name", "${var.env}-vpc", ))}"
+
+  # Install kubectl depending on os
+  provisioner "local-exec" {
+    command = "echo Add provisioner to install kubectl, aws-iam authenticator and update kube-config"
+  }
 }
+
 # Subnets
 resource "aws_subnet" "eks_public_1_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
