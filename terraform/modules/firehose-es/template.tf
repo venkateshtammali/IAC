@@ -158,5 +158,5 @@ resource "aws_kinesis_firehose_delivery_stream" "fh" {
       log_stream_name = "${aws_cloudwatch_log_stream.es_ls.name}"
     }
   }
-  tags = "${merge(var.default_tags)}"
+  tags = "${var.default_tags}"
 }
