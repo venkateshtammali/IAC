@@ -14,4 +14,7 @@ resource "aws_s3_bucket" "s3" {
       }
     }
   }
+  tags = "${merge(var.default_tags, map("Name", "event-${var.env}-s3", ))}"
 }
+
+

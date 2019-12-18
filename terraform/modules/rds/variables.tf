@@ -17,3 +17,7 @@ variable "subnet_ids" {
 variable "password" {
   type = string
 }
+
+variable "default_tags" {
+  type = "map"
+}

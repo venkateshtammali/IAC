@@ -9,19 +9,22 @@ data "aws_kms_alias" "s3" {
 module "s3" {
   source = "./../s3"
 
-  env    = "${var.env}"
-  region = "${var.region}"
+  env          = "${var.env}"
+  region       = "${var.region}"
+  default_tags = "${var.default_tags}"
 }
 
 module "es" {
   source = "./../elasticsearch"
 
-  env = "${var.env}"
+  env          = "${var.env}"
+  default_tags = "${var.default_tags}"
 }
 
 # Create log group for Firehose
 resource "aws_cloudwatch_log_group" "fh_lg" {
   name = "/aws/kinesisfirehose/${local.firehose_name}"
+
 }
 
 # Create log stream for S3
@@ -155,4 +158,5 @@ resource "aws_kinesis_firehose_delivery_stream" "fh" {
       log_stream_name = "${aws_cloudwatch_log_stream.es_ls.name}"
     }
   }
+  tags = "${var.default_tags}"
 }

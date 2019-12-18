@@ -11,9 +11,8 @@ resource "aws_security_group" "ec_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "${var.env}-ec-sg"
-  }
+  tags = "${merge(var.default_tags, map("Name", "${var.env}-ec-sg", ))}"
+
 }
 
 resource "aws_elasticache_subnet_group" "ec_sng" {
@@ -33,4 +32,5 @@ resource "aws_elasticache_replication_group" "ec" {
   port                          = 6379
   subnet_group_name             = "${aws_elasticache_subnet_group.ec_sng.name}"
   security_group_ids            = ["${aws_security_group.ec_sg.id}"]
+  tags                          = "${merge(var.default_tags, map("Name", "${var.env}-ec", ))}"
 }
