@@ -375,7 +375,7 @@ resource "aws_subnet" "rds_private_3_sn" {
   tags = "${merge(var.default_tags, map("Name", "${var.env}-rds-private-sn-3", ))}"
 }
 
-# RDS Route table
+#  RDS Route table
 resource "aws_route_table" "rds_private_rt" {
   vpc_id = "${aws_vpc.vpc.id}"
   route {
@@ -387,7 +387,7 @@ resource "aws_route_table" "rds_private_rt" {
   tags = "${merge(var.default_tags, map("Name", "${var.env}-rds-private-rt", ))}"
 }
 
-# Associating rds route tables with private subnets
+#  Associating rds route tables with private subnets
 resource "aws_route_table_association" "rds_private_1_rt_assoc" {
   subnet_id      = "${aws_subnet.rds_private_1_sn.id}"
   route_table_id = "${aws_route_table.rds_private_rt.id}"

@@ -50,10 +50,21 @@ module "eks_ng" {
 module "elasticcache" {
   source = "./../modules/elasticcache"
 
-  subnet_ids   = ["${module.vpc.ec_private_1_sn_id}", "${module.vpc.ec_private_2_sn_id}", "${module.vpc.ec_private_3_sn_id}"]
-  vpc_id       = "${module.vpc.vpc_id}"
-  region       = "${var.region}"
+  subnet_ids = ["${module.vpc.ec_private_1_sn_id}", "${module.vpc.ec_private_2_sn_id}", "${module.vpc.ec_private_3_sn_id}"]
+  vpc_id     = "${module.vpc.vpc_id}"
+  region     = "${var.region}"
+  env        = "${var.env}"
+}
+
+
+
+# creating health checks  
+module "r53-hc" {
+  source = "./../modules/r53-hc"
+
   env          = "${var.env}"
+  domain       = "dev.apty.io"
+  alarms_email = ["abc@gmail.com"]
   default_tags = "${local.default_tags}"
 }
 
