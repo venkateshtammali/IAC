@@ -78,7 +78,7 @@ resource "aws_db_instance" "postgres" {
 
   # Backup
   backup_window           = "00:00-00:00" # time to start backups
-  backup_retention_period = 1             # particular days of backup by default is 7 
+  backup_retention_period = 7            # particular days of backup by default is 7 
   # skip_final_snapshot  = false      # it will create the snapshot when ever we destroy the instance by default is false
 
   tags = "${merge(var.default_tags, map("Name", "${local.prefix}-rds", ))}"
