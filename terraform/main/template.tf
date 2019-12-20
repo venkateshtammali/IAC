@@ -46,12 +46,12 @@ module "eks_ng" {
 }
 
 module "alb-ingress-controller" {
-  source  = "iplabs/alb-ingress-controller/kubernetes"
-  version = "2.0.0"
+  source              = "iplabs/alb-ingress-controller/kubernetes"
+  version             = "2.0.0"
   aws_iam_path_prefix = "/test/"
-  aws_region_name = "us-west-2"
-  k8s_cluster_name = "${module.eks_cp.eks_cluster_name}"
-  aws_vpc_id     = "${module.vpc.vpc_id}"
+  aws_region_name     = "us-west-2"
+  k8s_cluster_name    = "${module.eks_cp.eks_cluster_name}"
+  aws_vpc_id          = "${module.vpc.vpc_id}"
 }
 
 # Create Redis
