@@ -85,3 +85,11 @@ module "rds" {
   password        = "${var.rds_password}"
   default_tags    = "${local.default_tags}"
 }
+
+# Create ECR
+module "ecr" {
+  source = "./../modules/ecr"
+
+  env    = "${var.env}"
+  default_tags    = "${local.default_tags}"
+}
