@@ -90,6 +90,6 @@ module "rds" {
 module "ecr" {
   source = "./../modules/ecr"
 
-  env    = "${var.env}"
-  default_tags    = "${local.default_tags}"
+  env          = "${var.env}"
+  default_tags = "${local.default_tags}"
 }
