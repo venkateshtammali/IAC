@@ -17,7 +17,7 @@ module "vpc" {
   default_tags = "${local.default_tags}"
 }
 
-# Create Firehose and ES
+#  Create Firehose and ES
 module "fh-es" {
   source = "./../modules/firehose-es"
 
@@ -26,7 +26,7 @@ module "fh-es" {
   default_tags = "${local.default_tags}"
 }
 
-# Create EKS control plane
+#  Create EKS control plane
 module "eks_cp" {
   source = "./../modules/eks/control-plane"
 
@@ -54,7 +54,7 @@ module "alb-ingress-controller" {
   aws_vpc_id          = "${module.vpc.vpc_id}"
 }
 
-# Create Redis
+#  Create Redis
 module "elasticcache" {
   source = "./../modules/elasticcache"
 
@@ -74,7 +74,7 @@ module "r53-hc" {
   default_tags = "${local.default_tags}"
 }
 
-# Create RDS
+#  Create RDS
 module "rds" {
   source = "./../modules/rds"
 
@@ -91,5 +91,6 @@ module "ecr" {
   source = "./../modules/ecr"
 
   env          = "${var.env}"
+  name         = "dev-ecr"
   default_tags = "${local.default_tags}"
 }

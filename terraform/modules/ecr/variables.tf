@@ -6,3 +6,6 @@ variable "default_tags" {
   type = "map"
 }
 
+variable "name" {
+  type = "string"
+}
