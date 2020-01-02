@@ -4,11 +4,11 @@ provider "aws" {
 
 locals {
   default_tags = {
-    Environment = "development"
+    Environment = "${var.env}"
   }
 }
 
-#  Create a VPC
+# Create a VPC
 module "vpc" {
   source = "../modules/vpc"
 
