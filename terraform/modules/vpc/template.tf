@@ -288,16 +288,35 @@ resource "aws_network_acl" "ec_private_nacl" {
   }
 
   ingress {
-    protocol   = -1
+    protocol   = "tcp"
     rule_no    = 100
     action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 0
+    cidr_block = "${aws_subnet.eks_private_1_sn.cidr_block}"
+    from_port  = 6379
+    to_port    = 6379
+  }
+
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 200
+    action     = "allow"
+    cidr_block = "${aws_subnet.eks_private_2_sn.cidr_block}"
+    from_port  = 6379
+    to_port    = 6379
+  }
+
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 300
+    action     = "allow"
+    cidr_block = "${aws_subnet.eks_private_3_sn.cidr_block}"
+    from_port  = 6379
+    to_port    = 6379
   }
 
   tags = "${merge(var.default_tags, map("Name", "${var.env}-ec-private-nacl", ))}"
 }
+
 # Redis Route table
 resource "aws_route_table" "ec_private_rt" {
   vpc_id = "${aws_vpc.vpc.id}"
@@ -308,6 +327,7 @@ resource "aws_route_table" "ec_private_rt" {
 
   tags = "${merge(var.default_tags, map("Name", "${var.env}-ec-private-rt", ))}"
 }
+
 #  NACL for RDS
 resource "aws_network_acl" "rds_private_nacl" {
   vpc_id = "${aws_vpc.vpc.id}"
@@ -327,16 +347,35 @@ resource "aws_network_acl" "rds_private_nacl" {
   }
 
   ingress {
-    protocol   = -1
+    protocol   = "tcp"
     rule_no    = 100
     action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 0
+    cidr_block = "${aws_subnet.eks_private_1_sn.cidr_block}"
+    from_port  = 5432
+    to_port    = 5432
+  }
+
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 200
+    action     = "allow"
+    cidr_block = "${aws_subnet.eks_private_2_sn.cidr_block}"
+    from_port  = 5432
+    to_port    = 5432
+  }
+
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 300
+    action     = "allow"
+    cidr_block = "${aws_subnet.eks_private_3_sn.cidr_block}"
+    from_port  = 5432
+    to_port    = 5432
   }
 
   tags = "${merge(var.default_tags, map("Name", "${var.env}-rds-private-rt", ))}"
 }
+
 #  Associating Redis route table with private subnets
 resource "aws_route_table_association" "ec_private_1_rt_assoc" {
   subnet_id      = "${aws_subnet.ec_private_1_sn.id}"
@@ -352,7 +391,6 @@ resource "aws_route_table_association" "ec_private_3_rt_assoc" {
   subnet_id      = "${aws_subnet.ec_private_3_sn.id}"
   route_table_id = "${aws_route_table.ec_private_rt.id}"
 }
-
 
 #  RDS subnets
 resource "aws_subnet" "rds_private_1_sn" {
