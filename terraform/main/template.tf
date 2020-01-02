@@ -4,7 +4,7 @@ provider "aws" {
 
 locals {
   default_tags = {
-    Environment = "development"
+    Environment = "${var.env}"
   }
 }
 

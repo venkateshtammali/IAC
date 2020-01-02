@@ -29,7 +29,7 @@ resource "aws_subnet" "eks_public_1_sn" {
     map(
       "Name", "${var.env}-eks-public-1-sn",
       "kubernetes.io/cluster/${local.eks_cluster_name}", "shared",
-      "kubernetes.io/role/internal-elb", 1
+      "kubernetes.io/role/elb", 1
     )
   )}"
 }
@@ -44,7 +44,7 @@ resource "aws_subnet" "eks_public_2_sn" {
     map(
       "Name", "${var.env}-eks-public-2-sn",
       "kubernetes.io/cluster/${local.eks_cluster_name}", "shared",
-      "kubernetes.io/role/internal-elb", 1
+      "kubernetes.io/role/elb", 1
     )
   )}"
 }
@@ -59,7 +59,7 @@ resource "aws_subnet" "eks_public_3_sn" {
     map(
       "Name", "${var.env}-eks-public-3-sn",
       "kubernetes.io/cluster/${local.eks_cluster_name}", "shared",
-      "kubernetes.io/role/internal-elb", 1
+      "kubernetes.io/role/elb", 1
     )
   )}"
 
@@ -215,8 +215,8 @@ resource "aws_nat_gateway" "nat" {
   depends_on    = ["aws_internet_gateway.igw"]
 
   tags = "${merge(var.default_tags, map("Name", "${var.env}-nat", ))}"
-
 }
+
 resource "aws_route_table" "eks_private_rt" {
   vpc_id = "${aws_vpc.vpc.id}"
   route {
