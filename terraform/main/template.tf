@@ -39,7 +39,7 @@ module "eks_cp" {
 module "eks_ng" {
   source = "./../modules/eks/node-group"
 
-  env          = "development"
+  env          = "${var.env}"
   cluster_name = "${module.eks_cp.eks_cluster_name}"
   subnet_ids   = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
   default_tags = "${local.default_tags}"
@@ -50,8 +50,12 @@ module "alb-ingress-controller" {
   version             = "2.0.0"
   aws_iam_path_prefix = "/test/"
   aws_region_name     = "us-west-2"
-  k8s_cluster_name    = "${module.eks_cp.eks_cluster_name}"
+  k8s_cluster_name    = "${module.eks_ng.cluster_name}"
   aws_vpc_id          = "${module.vpc.vpc_id}"
+}
+
+module "K8" {
+  source = "./../k8"
 }
 
 # Create Redis

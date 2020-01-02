@@ -1,17 +1,3 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-service
-spec:
-  type: NodePort
-  selector:
-    project: nginx-pods
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-
-
 resource "kubernetes_service" "nginx_service" {
   metadata {
     name = "nginx-service"
@@ -19,7 +5,7 @@ resource "kubernetes_service" "nginx_service" {
 
   spec {
     selector = {
-      project: "nginx-pods"
+      project : "nginx-pods"
     }
     session_affinity = "ClientIP"
     port {
