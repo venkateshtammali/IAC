@@ -8,7 +8,7 @@ locals {
   }
 }
 
-#  Create a VPC
+# Create a VPC
 module "vpc" {
   source = "../modules/vpc"
 

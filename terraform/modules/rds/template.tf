@@ -77,7 +77,7 @@ resource "aws_db_instance" "postgres" {
   monitoring_interval = 0
 
   # Backup
-  backup_window           = "00:00-00:00" # time to start backups
+  backup_window           = "00:00-00:30" # time to start backups
   backup_retention_period = 7             # particular days of backup by default is 7 
   # skip_final_snapshot  = false      # it will create the snapshot when ever we destroy the instance by default is false
 
