@@ -3,7 +3,7 @@ data "aws_kms_alias" "rds_kms" {
 }
 
 locals {
-  prefix = "${var.env}-${var.service_acronym}"
+  prefix = "${var.env}-${var.service_acronym}-rds"
 }
 
 # Create subnet group for rds
@@ -38,7 +38,7 @@ resource "aws_db_instance" "postgres" {
   engine         = "postgres"
   engine_version = "11.5"
   instance_class = "db.t2.medium" # Minimum t2.medium for encryptio
-  identifier     = "${local.prefix}-rds"
+  identifier     = "${local.prefix}"
 
   # Storage
   allocated_storage         = 20 # In GB
@@ -81,7 +81,7 @@ resource "aws_db_instance" "postgres" {
   backup_retention_period = 7             # particular days of backup by default is 7 
   # skip_final_snapshot  = false      # it will create the snapshot when ever we destroy the instance by default is false
 
-  tags = "${merge(var.default_tags, map("Name", "${local.prefix}-rds", ))}"
+  tags = "${merge(var.default_tags, map("Name", "${local.prefix}", ))}"
 
 }
 
