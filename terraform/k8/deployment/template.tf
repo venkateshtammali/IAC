@@ -1,3 +1,8 @@
+
+locals {
+  project = "nginx-pods"
+}
+
 resource "kubernetes_deployment" "deployment" {
   metadata {
     name = "nginx-deployment"
@@ -8,14 +13,14 @@ resource "kubernetes_deployment" "deployment" {
 
     selector {
       match_labels = {
-        project = "nginx-pods"
+        project = "${local.project}"
       }
     }
 
     template {
       metadata {
         labels = {
-          project = "nginx-pods"
+          project = "${local.project}"
         }
       }
 

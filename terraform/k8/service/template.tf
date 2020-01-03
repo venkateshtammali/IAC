@@ -10,7 +10,7 @@ resource "kubernetes_service" "nginx_service" {
 
   spec {
     selector = {
-      project = "nginx-pods"
+      project = "${var.nginx_pod_name}"
     }
     session_affinity = "ClientIP"
     port {

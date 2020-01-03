@@ -11,6 +11,6 @@ variable "env" {
   default     = "development"
 }
 
-# variable "rds_password" {
-#   type = "string"
-# }
+variable "rds_password" {
+  type = "string"
+}
