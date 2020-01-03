@@ -17,7 +17,7 @@ module "vpc" {
   default_tags = "${local.default_tags}"
 }
 
-# # Create Firehose and ES
+# Create Firehose and ES
 # module "fh-es" {
 #   source = "./../modules/firehose-es"
 
@@ -54,8 +54,18 @@ module "alb-ingress-controller" {
   aws_vpc_id          = "${module.vpc.vpc_id}"
 }
 
-module "K8" {
-  source = "./../k8"
+module "k8_service" {
+  source = "./../k8/service"
+}
+
+module "k8_ingress" {
+  source = "./../k8/ingress"
+
+  nginx_service_name = "${module.k8_service.nginx_service_name}"
+}
+
+module "k8_deployment" {
+  source = "./../k8/deployment"
 }
 
 # Create Redis

@@ -1,11 +1,16 @@
+locals {
+  service_name = "nginx-service"
+}
+
+
 resource "kubernetes_service" "nginx_service" {
   metadata {
-    name = "nginx-service"
+    name = "${local.service_name}"
   }
 
   spec {
     selector = {
-      project : "nginx-pods"
+      project = "nginx-pods"
     }
     session_affinity = "ClientIP"
     port {
