@@ -56,12 +56,8 @@ resource "aws_eks_cluster" "eks" {
   }
 
   depends_on = [
-    "aws_cloudwatch_log_group.eks_cp_lg",
-    "aws_iam_role_policy_attachment.eks_cluster_pl",
-    "aws_iam_role_policy_attachment.eks_service_pl",
+    aws_cloudwatch_log_group.eks_cp_lg,
+    aws_iam_role_policy_attachment.eks_cluster_pl,
+    aws_iam_role_policy_attachment.eks_service_pl,
   ]
-
-  provisioner "local-exec" {
-    command = "aws eks --region ${var.region} update-kubeconfig --name ${local.cluster_name}"
-  }
 }

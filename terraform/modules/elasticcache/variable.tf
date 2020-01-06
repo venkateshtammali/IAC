@@ -1,14 +1,14 @@
 variable "region" {
-  type = "string"
+  type = string
 }
 
 variable "env" {
   description = "Environment for terraform"
-  type        = "string"
+  type        = string
 }
 
 variable "vpc_id" {
-  type = "string"
+  type = string
 }
 
 variable "subnet_ids" {
@@ -16,5 +16,5 @@ variable "subnet_ids" {
 }
 
 variable "default_tags" {
-  type = "map"
+  type = map
 }

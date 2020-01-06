@@ -1,13 +1,13 @@
 variable "region" {
   description = "Controls if VPC should be created (it affects almost all resources)"
-  type        = "string"
+  type        = string
 }
 
 variable "env" {
   description = "Environment for terraform"
-  type        = "string"
+  type        = string
 }
 
 variable "default_tags" {
-  type = "map"
+  type = map
 }

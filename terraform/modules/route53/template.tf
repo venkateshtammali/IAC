@@ -1,5 +1,5 @@
 variable "domains" {
-  type = "map"
+  type = map
   default = {
     development = "1dev.apty.io",
     qa          = "qa.apty.io"

@@ -67,4 +67,11 @@ resource "aws_eks_node_group" "ng" {
     aws_iam_role_policy_attachment.ng_cni_pl,
     aws_iam_role_policy_attachment.ng_ecr_pl,
   ]
+
+#   provisioner "local-exec" {
+#     command = <<EOT
+#     sleep 180 && aws eks --region ${var.region} update-kubeconfig --name ${local.cluster_name}
+# EOT
+#   }
+
 }
