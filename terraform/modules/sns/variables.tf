@@ -4,9 +4,9 @@ variable "email_addresses" {
 }
 
 variable "display_name" {
-  type = "string"
+  type = string
 }
 
 variable "default_tags" {
-  type = "map"
+  type = map
 }

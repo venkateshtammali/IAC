@@ -1,11 +1,11 @@
 variable "env" {
-  type = "string"
+  type = string
 }
 
 variable "default_tags" {
-  type = "map"
+  type = map
 }
 
 variable "domain" {
-  type = "string"
+  type = string
 }

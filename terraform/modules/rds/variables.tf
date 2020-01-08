@@ -1,13 +1,13 @@
 variable "env" {
-  type = "string"
+  type = string
 }
 
 variable "vpc_id" {
-  type = "string"
+  type = string
 }
 
 variable "service_acronym" {
-  type = "string"
+  type = string
 }
 
 variable "subnet_ids" {
@@ -19,5 +19,5 @@ variable "password" {
 }
 
 variable "default_tags" {
-  type = "map"
+  type = map
 }

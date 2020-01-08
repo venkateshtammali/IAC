@@ -1,9 +1,9 @@
 variable "env" {
-  type = "string"
+  type = string
 }
 
 variable "domain" {
-  type = "string"
+  type = string
 }
 
 variable "alarms_email" {
@@ -11,5 +11,5 @@ variable "alarms_email" {
 }
 
 variable "default_tags" {
-  type = "map"
+  type = map
 }

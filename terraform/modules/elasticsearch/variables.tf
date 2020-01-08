@@ -1,7 +1,7 @@
 variable "env" {
-  type = "string"
+  type = string
 }
 
 variable "default_tags" {
-  type = "map"
+  type = map
 }

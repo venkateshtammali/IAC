@@ -7,6 +7,22 @@ locals {
     Environment = "${var.env}"
   }
 }
+# creating kubeconfig
+data "aws_eks_cluster" "cluster" {
+  name = module.eks_cp.cluster_id
+}
+
+data "aws_eks_cluster_auth" "cluster" {
+  name = module.eks_cp.cluster_id
+}
+
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
+  token                  = data.aws_eks_cluster_auth.cluster.token
+  load_config_file       = false
+  version                = "~> 1.9"
+}
 
 # Create a VPC
 module "vpc" {
@@ -39,19 +55,38 @@ module "eks_cp" {
 module "eks_ng" {
   source = "./../modules/eks/node-group"
 
-  env          = "development"
+  env          = "${var.env}"
   cluster_name = "${module.eks_cp.eks_cluster_name}"
   subnet_ids   = ["${module.vpc.eks_private_1_sn_id}", "${module.vpc.eks_private_2_sn_id}", "${module.vpc.eks_private_3_sn_id}"]
   default_tags = "${local.default_tags}"
 }
 
+# create ALB for K8
 module "alb-ingress-controller" {
   source              = "iplabs/alb-ingress-controller/kubernetes"
   version             = "2.0.0"
-  aws_iam_path_prefix = "/test/"
+  aws_iam_path_prefix = "/test/" #Should check this
   aws_region_name     = "us-west-2"
-  k8s_cluster_name    = "${module.eks_cp.eks_cluster_name}"
+  k8s_cluster_name    = "${module.eks_ng.cluster_name}"
   aws_vpc_id          = "${module.vpc.vpc_id}"
+}
+
+# create k8 deployment files
+module "k8_service" {
+  source = "./../k8/service"
+
+  nginx_pod_name = "${module.k8_deployment.nginx_pod_name}"
+}
+
+module "k8_ingress" {
+  source = "./../k8/ingress"
+
+  nginx_service_name = "${module.k8_service.nginx_service_name}"
+}
+
+module "k8_deployment" {
+  source = "./../k8/deployment"
+
 }
 
 # Create Redis
@@ -74,7 +109,7 @@ module "r53-hc" {
   default_tags = "${local.default_tags}"
 }
 
-# Create RDS
+#  Create RDS
 module "rds" {
   source = "./../modules/rds"
 
@@ -86,7 +121,7 @@ module "rds" {
   default_tags    = "${local.default_tags}"
 }
 
-# Create ECR
+#  Create ECR
 module "ecr" {
   source = "./../modules/ecr"
 
@@ -95,7 +130,7 @@ module "ecr" {
   default_tags = "${local.default_tags}"
 }
 
-# Create ACM
+#  Create ACM
 module "acm" {
   source = "./../modules/acm"
 

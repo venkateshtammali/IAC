@@ -43,7 +43,7 @@ output "ec_private_3_sn_id" {
   value = "${aws_subnet.ec_private_3_sn.id}"
 }
 
-# RDS Subnets as outputs
+#  RDS Subnets as outputs
 output "rds_private_1_sn_id" {
   value = "${aws_subnet.rds_private_1_sn.id}"
 }

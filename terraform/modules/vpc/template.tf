@@ -29,7 +29,7 @@ resource "aws_subnet" "eks_public_1_sn" {
     map(
       "Name", "${var.env}-eks-public-1-sn",
       "kubernetes.io/cluster/${local.eks_cluster_name}", "shared",
-      "kubernetes.io/role/internal-elb", 1
+      "kubernetes.io/role/elb", 1
     )
   )}"
 }
@@ -44,7 +44,7 @@ resource "aws_subnet" "eks_public_2_sn" {
     map(
       "Name", "${var.env}-eks-public-2-sn",
       "kubernetes.io/cluster/${local.eks_cluster_name}", "shared",
-      "kubernetes.io/role/internal-elb", 1
+      "kubernetes.io/role/elb", 1
     )
   )}"
 }
@@ -59,7 +59,7 @@ resource "aws_subnet" "eks_public_3_sn" {
     map(
       "Name", "${var.env}-eks-public-3-sn",
       "kubernetes.io/cluster/${local.eks_cluster_name}", "shared",
-      "kubernetes.io/role/internal-elb", 1
+      "kubernetes.io/role/elb", 1
     )
   )}"
 
@@ -212,7 +212,7 @@ resource "aws_eip" "nat" {
 resource "aws_nat_gateway" "nat" {
   allocation_id = "${aws_eip.nat.id}"
   subnet_id     = "${aws_subnet.eks_public_1_sn.id}"
-  depends_on    = ["aws_internet_gateway.igw"]
+  depends_on    = [aws_internet_gateway.igw]
 
   tags = "${merge(var.default_tags, map("Name", "${var.env}-nat", ))}"
 
@@ -243,7 +243,7 @@ resource "aws_route_table_association" "eks_private_3_rt_assoc" {
   route_table_id = "${aws_route_table.eks_private_rt.id}"
 }
 
-#  Redis subnets
+#   Redis subnets
 resource "aws_subnet" "ec_private_1_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.7.0/24"
@@ -251,8 +251,8 @@ resource "aws_subnet" "ec_private_1_sn" {
   availability_zone       = "us-west-2a"
 
   tags = "${merge(var.default_tags, map("Name", "${var.env}-ec-private-sn-1", ))}"
-
 }
+
 resource "aws_subnet" "ec_private_2_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.8.0/24"
@@ -328,7 +328,7 @@ resource "aws_route_table" "ec_private_rt" {
   tags = "${merge(var.default_tags, map("Name", "${var.env}-ec-private-rt", ))}"
 }
 
-#  NACL for RDS
+# NACL for RDS
 resource "aws_network_acl" "rds_private_nacl" {
   vpc_id = "${aws_vpc.vpc.id}"
   subnet_ids = [
@@ -376,7 +376,7 @@ resource "aws_network_acl" "rds_private_nacl" {
   tags = "${merge(var.default_tags, map("Name", "${var.env}-rds-private-rt", ))}"
 }
 
-#  Associating Redis route table with private subnets
+# Associating Redis route table with private subnets
 resource "aws_route_table_association" "ec_private_1_rt_assoc" {
   subnet_id      = "${aws_subnet.ec_private_1_sn.id}"
   route_table_id = "${aws_route_table.ec_private_rt.id}"
@@ -392,7 +392,7 @@ resource "aws_route_table_association" "ec_private_3_rt_assoc" {
   route_table_id = "${aws_route_table.ec_private_rt.id}"
 }
 
-#  RDS subnets
+# RDS subnets
 resource "aws_subnet" "rds_private_1_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.10.0/24"
@@ -419,7 +419,7 @@ resource "aws_subnet" "rds_private_3_sn" {
   tags = "${merge(var.default_tags, map("Name", "${var.env}-rds-private-sn-3", ))}"
 }
 
-#  RDS Route table
+# RDS Route table
 resource "aws_route_table" "rds_private_rt" {
   vpc_id = "${aws_vpc.vpc.id}"
   route {
@@ -431,7 +431,7 @@ resource "aws_route_table" "rds_private_rt" {
   tags = "${merge(var.default_tags, map("Name", "${var.env}-rds-private-rt", ))}"
 }
 
-#  Associating rds route tables with private subnets
+# Associating rds route tables with private subnets
 resource "aws_route_table_association" "rds_private_1_rt_assoc" {
   subnet_id      = "${aws_subnet.rds_private_1_sn.id}"
   route_table_id = "${aws_route_table.rds_private_rt.id}"
