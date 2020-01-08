@@ -11,3 +11,4 @@ variable "env" {
 variable "rds_password" {
   type = "string"
 }
+

@@ -19,5 +19,9 @@ variable "password" {
 }
 
 variable "default_tags" {
-  type = "map"
+  type = map
+}
+
+variable "multi_az" {
+  type = bool 
 }

@@ -57,7 +57,7 @@ resource "aws_db_instance" "postgres" {
 
   # Networking
   db_subnet_group_name   = "${aws_db_subnet_group.rds_sng.name}"
-  multi_az               = true
+  multi_az               = "${var.multi_az}"
   storage_type           = "gp2"
   vpc_security_group_ids = ["${aws_security_group.rds_sg.id}"]
 

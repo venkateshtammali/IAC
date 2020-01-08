@@ -18,6 +18,11 @@ module "es" {
   source = "./../elasticsearch"
 
   env          = "${var.env}"
+  dedicated_master_enabled = "${var.dedicated_master_enabled}"
+  master_instance_type = "${var.master_instance_type}"
+  master_instance_count = "${var.master_instance_count}"
+  worker_instance_type = "${var.worker_instance_type}"
+  worker_instance_count = "${var.worker_instance_count}"
   default_tags = "${var.default_tags}"
 }
 

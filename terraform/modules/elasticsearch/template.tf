@@ -2,10 +2,10 @@ resource "aws_elasticsearch_domain" "es" {
   domain_name           = "${var.env}-es"
   elasticsearch_version = "6.7"
   cluster_config {
-    instance_type  = "t2.small.elasticsearch"
-    instance_count = 1
-
-    dedicated_master_enabled = "false"
+   
+     dedicated_master_enabled = "${var.dedicated_master_enabled}"
+    
+    
   }
 
   advanced_options = {
