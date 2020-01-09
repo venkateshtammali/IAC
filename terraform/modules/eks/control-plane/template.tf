@@ -2,9 +2,13 @@ locals {
   cluster_name = "${var.cluster_name}"
 }
 
+locals {
+  prefix = "${var.env}-eks"
+}
+
 resource "aws_iam_role" "eks_rl" {
-  name = "${var.env}-eks-rl"
-  tags = "${merge(var.default_tags, map("Name", "${var.env}-eks-rl", ))}"
+  name = "${local.prefix}-rl"
+  tags = "${merge(var.default_tags, map("Name", "${local.prefix}-rl", ))}"
 
   assume_role_policy = <<POLICY
 {
@@ -52,8 +56,8 @@ resource "aws_eks_cluster" "eks" {
   }
 
   depends_on = [
-    "aws_cloudwatch_log_group.eks_cp_lg",
-    "aws_iam_role_policy_attachment.eks_cluster_pl",
-    "aws_iam_role_policy_attachment.eks_service_pl",
+    aws_cloudwatch_log_group.eks_cp_lg,
+    aws_iam_role_policy_attachment.eks_cluster_pl,
+    aws_iam_role_policy_attachment.eks_service_pl,
   ]
 }

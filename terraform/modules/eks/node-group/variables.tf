@@ -1,9 +1,9 @@
 variable "env" {
-  type = "string"
+  type = string
 }
 
 variable "cluster_name" {
-  type = "string"
+  type = string
 }
 
 variable "subnet_ids" {
@@ -11,5 +11,9 @@ variable "subnet_ids" {
 }
 
 variable "default_tags" {
-  type = "map"
+  type = map
+}
+
+variable "worker_instance_type" {
+  type = string
 }

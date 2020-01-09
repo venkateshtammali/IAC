@@ -1,13 +1,13 @@
 variable "env" {
-  type = "string"
+  type = string
 }
 
 variable "vpc_id" {
-  type = "string"
+  type = string
 }
 
 variable "service_acronym" {
-  type = "string"
+  type = string
 }
 
 variable "subnet_ids" {
@@ -23,5 +23,13 @@ variable "default_tags" {
 }
 
 variable "multi_az" {
-  type = bool 
+  type = bool
+}
+
+variable "instance_class" {
+  type = string
+}
+
+variable "monitoring_interval" {
+  type = number
 }
