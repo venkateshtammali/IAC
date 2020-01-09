@@ -11,3 +11,7 @@ variable "env" {
 variable "default_tags" {
   type = map
 }
+
+variable "azs" {
+  type = list(string)
+}

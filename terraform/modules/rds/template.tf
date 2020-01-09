@@ -37,7 +37,7 @@ resource "aws_db_instance" "postgres" {
   # Metadata
   engine         = "postgres"
   engine_version = "11.5"
-  instance_class = "db.t2.medium" # Minimum t2.medium for encryptio
+  instance_class = "${var.instance_class}" # Minimum t2.medium for encryptio
   identifier     = "${local.prefix}"
 
   # Storage
@@ -57,7 +57,7 @@ resource "aws_db_instance" "postgres" {
 
   # Networking
   db_subnet_group_name   = "${aws_db_subnet_group.rds_sng.name}"
-  multi_az               = true
+  multi_az               = "${var.multi_az}"
   storage_type           = "gp2"
   vpc_security_group_ids = ["${aws_security_group.rds_sg.id}"]
 
@@ -74,7 +74,7 @@ resource "aws_db_instance" "postgres" {
   performance_insights_kms_key_id = "${data.aws_kms_alias.rds_kms.target_key_arn}" # should provide arn as value
 
   # Monitoring
-  monitoring_interval = 0
+  monitoring_interval = "${var.monitoring_interval}"
 
   # Backup
   backup_window           = "00:00-00:30" # time to start backups

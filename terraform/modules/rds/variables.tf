@@ -21,3 +21,15 @@ variable "password" {
 variable "default_tags" {
   type = map
 }
+
+variable "multi_az" {
+  type = bool
+}
+
+variable "instance_class" {
+  type = string
+}
+
+variable "monitoring_interval" {
+  type = number
+}

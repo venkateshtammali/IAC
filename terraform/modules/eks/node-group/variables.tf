@@ -13,3 +13,7 @@ variable "subnet_ids" {
 variable "default_tags" {
   type = map
 }
+
+variable "worker_instance_type" {
+  type = string
+}

@@ -1,5 +1,5 @@
 variable "email_addresses" {
-  type        = "list"
+  type        = list
   description = "Email address to send notifications to"
 }
 

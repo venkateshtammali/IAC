@@ -22,7 +22,7 @@ resource "aws_subnet" "eks_public_1_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = "true"
-  availability_zone       = "us-west-2a"
+  availability_zone       = var.azs[0]
 
   tags = "${merge(
     var.default_tags,
@@ -37,7 +37,7 @@ resource "aws_subnet" "eks_public_2_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.2.0/24"
   map_public_ip_on_launch = "true"
-  availability_zone       = "us-west-2b"
+  availability_zone       = var.azs[1]
 
   tags = "${merge(
     var.default_tags,
@@ -52,7 +52,7 @@ resource "aws_subnet" "eks_public_3_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.3.0/24"
   map_public_ip_on_launch = "true"
-  availability_zone       = "us-west-2c"
+  availability_zone       = var.azs[2]
 
   tags = "${merge(
     var.default_tags,
@@ -68,7 +68,7 @@ resource "aws_subnet" "eks_private_1_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.4.0/24"
   map_public_ip_on_launch = "false"
-  availability_zone       = "us-west-2a"
+  availability_zone       = var.azs[0]
 
   tags = "${merge(
     var.default_tags,
@@ -83,7 +83,7 @@ resource "aws_subnet" "eks_private_2_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.5.0/24"
   map_public_ip_on_launch = "false"
-  availability_zone       = "us-west-2b"
+  availability_zone       = var.azs[1]
 
   tags = "${merge(
     var.default_tags,
@@ -99,7 +99,7 @@ resource "aws_subnet" "eks_private_3_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.6.0/24"
   map_public_ip_on_launch = "false"
-  availability_zone       = "us-west-2c"
+  availability_zone       = var.azs[2]
 
   tags = "${merge(
     var.default_tags,
@@ -248,7 +248,7 @@ resource "aws_subnet" "ec_private_1_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.7.0/24"
   map_public_ip_on_launch = "false"
-  availability_zone       = "us-west-2a"
+  availability_zone       = var.azs[0]
 
   tags = "${merge(var.default_tags, map("Name", "${var.env}-ec-private-sn-1", ))}"
 }
@@ -257,7 +257,7 @@ resource "aws_subnet" "ec_private_2_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.8.0/24"
   map_public_ip_on_launch = "false"
-  availability_zone       = "us-west-2b"
+  availability_zone       = var.azs[1]
 
   tags = "${merge(var.default_tags, map("Name", "${var.env}-ec-private-sn-2", ))}"
 }
@@ -265,7 +265,7 @@ resource "aws_subnet" "ec_private_3_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.9.0/24"
   map_public_ip_on_launch = "false"
-  availability_zone       = "us-west-2c"
+  availability_zone       = var.azs[2]
 
   tags = "${merge(var.default_tags, map("Name", "${var.env}-ec-private-sn-3", ))}"
 }
@@ -397,7 +397,7 @@ resource "aws_subnet" "rds_private_1_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.10.0/24"
   map_public_ip_on_launch = "false"
-  availability_zone       = "us-west-2a"
+  availability_zone       = var.azs[0]
 
   tags = "${merge(var.default_tags, map("Name", "${var.env}-rds-private-sn-1", ))}"
 }
@@ -405,7 +405,7 @@ resource "aws_subnet" "rds_private_2_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.11.0/24"
   map_public_ip_on_launch = "false"
-  availability_zone       = "us-west-2b"
+  availability_zone       = var.azs[1]
 
   tags = "${merge(var.default_tags, map("Name", "${var.env}-rds-private-sn-2", ))}"
 }
@@ -414,7 +414,7 @@ resource "aws_subnet" "rds_private_3_sn" {
   vpc_id                  = "${aws_vpc.vpc.id}"
   cidr_block              = "10.0.12.0/24"
   map_public_ip_on_launch = "false"
-  availability_zone       = "us-west-2c"
+  availability_zone       = var.azs[2]
 
   tags = "${merge(var.default_tags, map("Name", "${var.env}-rds-private-sn-3", ))}"
 }
